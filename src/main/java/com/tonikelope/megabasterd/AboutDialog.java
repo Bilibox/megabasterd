@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author tonikelope
+ * @Mod Bilibox
  */
 public final class AboutDialog extends javax.swing.JDialog {
 
@@ -125,8 +126,8 @@ public final class AboutDialog extends javax.swing.JDialog {
         });
 
         author_webpage_label.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        author_webpage_label.setForeground(new java.awt.Color(102, 102, 102));
-        author_webpage_label.setText("Made with love (and with no warranty) by tonikelope.");
+        author_webpage_label.setForeground(new java.awt.Color(255, 0, 0));
+        author_webpage_label.setText("Made with love (and with no warranty) by tonikelope. Mod by Bilibox");
         author_webpage_label.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         author_webpage_label.setDoubleBuffered(true);
         author_webpage_label.addMouseListener(new java.awt.event.MouseAdapter() {

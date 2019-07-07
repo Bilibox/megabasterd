@@ -43,6 +43,7 @@ import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author tonikelope
+ * @Mod Bilibox
  */
 public final class SettingsDialog extends javax.swing.JDialog {
 

@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 /**
  *
  * @author tonikelope
+ * @Mod Bilibox
  */
 public class ChunkDownloader implements Runnable, SecureSingleThreadNotifiable {
 
@@ -27,7 +28,7 @@ public class ChunkDownloader implements Runnable, SecureSingleThreadNotifiable {
     private final Object _secure_notify_lock;
     private volatile boolean _error_wait;
     private boolean _notified;
-    private final boolean _force_smartproxy = false; //True for debugging SmartProxy
+    private final boolean _force_smartproxy = true; //True for debugging SmartProxy
     private String _current_smart_proxy;
 
     public ChunkDownloader(int id, Download download) {

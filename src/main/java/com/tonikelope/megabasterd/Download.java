@@ -42,12 +42,13 @@ import javax.swing.JComponent;
 /**
  *
  * @author tonikelope
+ * @Mod Bilibox
  */
 public final class Download implements Transference, Runnable, SecureSingleThreadNotifiable {
 
     public static final boolean VERIFY_CBC_MAC_DEFAULT = false;
     public static final boolean USE_SLOTS_DEFAULT = true;
-    public static final int WORKERS_DEFAULT = 6;
+    public static final int WORKERS_DEFAULT = 50;
     public static final boolean USE_MEGA_ACCOUNT_DOWN = false;
     public static final int CHUNK_SIZE_MULTI = 10;
 
