@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  */
 public final class SmartMegaProxyManager {
 
-    public static String DEFAULT_SMART_PROXY_URL = "https://raw.githubusercontent.com/tonikelope/megabasterd/proxy_list/proxy_list.txt";
+    public static String DEFAULT_SMART_PROXY_URL = "https://raw.githubusercontent.com/Bilibox/megabasterd/proxy_list/proxy_list.txt";
     public static final int BLOCK_TIME = 120;
     private volatile String _proxy_list_url;
     private final LinkedHashMap<String, Long> _proxy_list;
