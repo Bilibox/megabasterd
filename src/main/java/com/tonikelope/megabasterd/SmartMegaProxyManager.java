@@ -14,8 +14,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author tonikelope
- * @Mod Bilibox
+ * @author tonikelope @Mod Bilibox
  */
 public final class SmartMegaProxyManager {
 

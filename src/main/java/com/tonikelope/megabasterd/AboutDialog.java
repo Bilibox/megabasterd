@@ -8,8 +8,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author tonikelope
- * @Mod Bilibox
+ * @author tonikelope @Mod Bilibox
  */
 public final class AboutDialog extends javax.swing.JDialog {
 

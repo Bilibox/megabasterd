@@ -4,8 +4,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  *
- * @author tonikelope
- * @Mod Bilibox
+ * @author tonikelope @Mod Bilibox
  */
 public interface Transference {
 

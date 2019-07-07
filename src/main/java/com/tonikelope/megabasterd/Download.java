@@ -41,8 +41,7 @@ import javax.swing.JComponent;
 
 /**
  *
- * @author tonikelope
- * @Mod Bilibox
+ * @author tonikelope @Mod Bilibox
  */
 public final class Download implements Transference, Runnable, SecureSingleThreadNotifiable {
 
