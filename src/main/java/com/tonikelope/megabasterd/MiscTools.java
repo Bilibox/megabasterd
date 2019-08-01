@@ -78,7 +78,7 @@ import javax.xml.bind.DatatypeConverter;
 
 /**
  *
- * @author tonikelope
+ * @author tonikelope @Bilibox
  */
 public final class MiscTools {
 
@@ -86,7 +86,7 @@ public final class MiscTools {
     public static final int EXP_BACKOFF_SECS_RETRY = 1;
     public static final int EXP_BACKOFF_MAX_WAIT_TIME = 16;
     public static final Object PASS_LOCK = new Object();
-    public static final int HTTP_TIMEOUT = 30;
+    public static final int HTTP_TIMEOUT = 10;
     private static final Comparator<DefaultMutableTreeNode> TREE_NODE_COMPARATOR = new Comparator< DefaultMutableTreeNode>() {
 
         @Override
