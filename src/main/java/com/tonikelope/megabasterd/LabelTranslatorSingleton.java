@@ -36,6 +36,9 @@ public final class LabelTranslatorSingleton {
 
     private void Spanish() {
 
+        _addTranslation("Split content in different uploads", "Separar contenido en diferentes subidas");
+        _addTranslation("Merge content in the same upload", "Juntar todo en la misma subida");
+        _addTranslation("How do you want to proceed?", "¿Qué quieres hacer?");
         _addTranslation("Freeze transferences before start", "Congelar transferencias antes de empezar");
         _addTranslation("UNFREEZE WAITING TRANSFERENCES", "DESCONGELAR TRANSFERENCIAS A LA ESPERA");
         _addTranslation("(FROZEN) Waiting to start...", "(CONGELADA) Esperando para empezar...");
@@ -70,7 +73,7 @@ public final class LabelTranslatorSingleton {
         _addTranslation("Remove selected", "Quitar seleccionado");
         _addTranslation("SPLIT FILE", "PARTIR ARCHIVO");
         _addTranslation("Encrypt on disk sensitive information", "Cifrar en disco datos sensibles");
-        _addTranslation("Allow to use MEGA accounts for download/streaming", "Permitir utilizar cuentas de MEGA para descargar/streaming");
+        _addTranslation("Allow using MEGA accounts for download/streaming", "Permitir utilizar cuentas de MEGA para descargar/streaming");
         _addTranslation("Please wait...", "Por favor espera...");
         _addTranslation("CANCEL RETRY", "CANCELAR REINTENTO");
         _addTranslation("SPLITTING FILE...", "PARTIENDO ARCHIVO...");
