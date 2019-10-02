@@ -21,13 +21,14 @@ import java.util.logging.Logger;
 public class ChunkDownloader implements Runnable, SecureSingleThreadNotifiable {
 
     public static final double SLOW_PROXY_PERC = 0.3;
-    private final boolean FORCE_SMART_PROXY = true; //True for debugging SmartProxy
+    private final boolean FORCE_SMART_PROXY = false; //True for debugging SmartProxy
     private final int _id;
     private final Download _download;
     private volatile boolean _exit;
     private final Object _secure_notify_lock;
     private volatile boolean _error_wait;
     private boolean _notified;
+
     private String _current_smart_proxy;
 
     public ChunkDownloader(int id, Download download) {
@@ -392,8 +393,8 @@ public class ChunkDownloader implements Runnable, SecureSingleThreadNotifiable {
                             _download.getView().updateSlotsStatus();
 
                             try {
-                                Thread.sleep(MiscTools.getWaitTimeExpBackOff(conta_error));
-                            } catch (InterruptedException excep) {
+                                Thread.sleep(MiscTools.getWaitTimeExpBackOff(++conta_error) * 1000);
+                            } catch (InterruptedException exc) {
                             }
 
                             _error_wait = false;
