@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  *
  * @author tonikelope @Mod Bilibox
  */
-public final class AboutDialog extends javax.swing.JDialog {
+public class AboutDialog extends javax.swing.JDialog {
 
     public static final String MEGA_URL = "https://mega.nz/";
     public static final String MEGABASTERD_URL = "https://github.com/Bilibox/megabasterd/releases/latest";
