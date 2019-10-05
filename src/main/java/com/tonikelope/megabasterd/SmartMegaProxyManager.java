@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author tonikelope @Mod Bilibox
  */
-public class SmartMegaProxyManager {
+public final class SmartMegaProxyManager {
 
     public static String DEFAULT_SMART_PROXY_URL = "https://raw.githubusercontent.com/Bilibox/megabasterd/proxy_list/proxy_list.txt";
     public static final int BLOCK_TIME = 180;
