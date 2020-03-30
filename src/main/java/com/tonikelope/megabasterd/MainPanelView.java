@@ -1001,7 +1001,7 @@ public final class MainPanelView extends javax.swing.JFrame {
 
                                 FolderLinkDialog fdialog = new FolderLinkDialog(_main_panel.getView(), true, url);
 
-                                if (!fdialog.isMega_error()) {
+                                if (fdialog.isMega_error() == 0) {
 
                                     fdialog.setLocationRelativeTo(_main_panel.getView());
 
@@ -1209,8 +1209,6 @@ public final class MainPanelView extends javax.swing.JFrame {
                     }
 
                     MainPanel.getProxy_manager().refreshProxyList();
-
-                    updateSmartProxyStatus("SmartProxy: ON (" + String.valueOf(MainPanel.getProxy_manager().getProxyCount()) + ")");
 
                 } else {
 
