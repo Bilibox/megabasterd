@@ -1,6 +1,5 @@
 package com.tonikelope.megabasterd;
 
-import static com.tonikelope.megabasterd.Download.PROGRESS_WATCHDOG_TIMEOUT;
 import static com.tonikelope.megabasterd.MainPanel.*;
 import static com.tonikelope.megabasterd.MiscTools.*;
 import static com.tonikelope.megabasterd.Transference.PROGRESS_WATCHDOG_TIMEOUT;

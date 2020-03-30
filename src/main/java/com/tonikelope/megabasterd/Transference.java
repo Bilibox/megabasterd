@@ -12,8 +12,8 @@ public interface Transference {
     int MAX_WORKERS = 100;
     int HTTP_PROXY_CONNECT_TIMEOUT = 8000;
     int HTTP_PROXY_READ_TIMEOUT = 8000;
-    int HTTP_CONNECT_TIMEOUT = 60000;
-    int HTTP_READ_TIMEOUT = 60000;
+    int HTTP_CONNECT_TIMEOUT = 30000;
+    int HTTP_READ_TIMEOUT = 30000;
     int MAX_SIM_TRANSFERENCES = 20;
     int SIM_TRANSFERENCES_DEFAULT = 4;
     int PROGRESS_WATCHDOG_TIMEOUT = 300;
@@ -78,5 +78,9 @@ public interface Transference {
     boolean isStatusError();
 
     int getSlotsCount();
+
+    int getPausedWorkers();
+
+    int getTotWorkers();
 
 }
