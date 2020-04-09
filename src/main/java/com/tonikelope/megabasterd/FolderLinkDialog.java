@@ -332,9 +332,9 @@ public class FolderLinkDialog extends javax.swing.JDialog {
 
             MegaAPI ma = new MegaAPI();
 
-            String folder_id = findFirstRegex("#F!([^!]+)", _link, 1);
+            String folder_id = findFirstRegex("(?<=folder/).*(?=#)", _link, 0);
 
-            String folder_key = findFirstRegex("#F![^!]+!(.+)", _link, 1);
+            String folder_key = findFirstRegex("(?<=#).*", _link, 0);
 
             folder_nodes = ma.getFolderNodes(folder_id, folder_key);
 
@@ -438,7 +438,7 @@ public class FolderLinkDialog extends javax.swing.JDialog {
         swingInvoke(() -> {
             setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
-            String folder_id = findFirstRegex("#F!([^!]+)", _link, 1);
+            String folder_id = findFirstRegex("(?<=folder/).*(?=#)", _link, 0);
 
             _download_links.clear();
 
