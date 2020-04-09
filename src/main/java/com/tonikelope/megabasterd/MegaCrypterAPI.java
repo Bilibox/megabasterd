@@ -30,7 +30,6 @@ public class MegaCrypterAPI {
 
     public static final Set<String> PASS_CACHE = new HashSet<>();
     public static final Object PASS_LOCK = new Object();
-    private static final Logger LOG = Logger.getLogger(MegaCrypterAPI.class.getName());
 
     private static String _rawRequest(String request, URL url_api) throws MegaCrypterAPIException {
 
@@ -42,11 +41,13 @@ public class MegaCrypterAPI {
 
             if (MainPanel.isUse_proxy()) {
 
-                con = (HttpURLConnection) url_api.openConnection(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(MainPanel.getProxy_host(), MainPanel.getProxy_port())));
+                con = (HttpURLConnection) url_api.openConnection(new Proxy(Proxy.Type.HTTP,
+                        new InetSocketAddress(MainPanel.getProxy_host(), MainPanel.getProxy_port())));
 
                 if (MainPanel.getProxy_user() != null && !"".equals(MainPanel.getProxy_user())) {
 
-                    con.setRequestProperty("Proxy-Authorization", "Basic " + MiscTools.Bin2BASE64((MainPanel.getProxy_user() + ":" + MainPanel.getProxy_pass()).getBytes("UTF-8")));
+                    con.setRequestProperty("Proxy-Authorization", "Basic " + MiscTools.Bin2BASE64(
+                            (MainPanel.getProxy_user() + ":" + MainPanel.getProxy_pass()).getBytes("UTF-8")));
                 }
             } else {
 
@@ -68,11 +69,13 @@ public class MegaCrypterAPI {
             con.getOutputStream().close();
 
             if (con.getResponseCode() != 200) {
-                Logger.getLogger(MegaCrypterAPI.class.getName()).log(Level.INFO, "{0} Failed : HTTP error code : {1}", new Object[]{Thread.currentThread().getName(), con.getResponseCode()});
+                Logger.getLogger(MegaCrypterAPI.class.getName()).log(Level.INFO, "{0} Failed : HTTP error code : {1}",
+                        new Object[] { Thread.currentThread().getName(), con.getResponseCode() });
 
             } else {
 
-                try (InputStream is = con.getInputStream(); ByteArrayOutputStream byte_res = new ByteArrayOutputStream()) {
+                try (InputStream is = con.getInputStream();
+                        ByteArrayOutputStream byte_res = new ByteArrayOutputStream()) {
 
                     byte[] buffer = new byte[MainPanel.DEFAULT_BYTE_BUFFER_SIZE];
 
@@ -110,8 +113,12 @@ public class MegaCrypterAPI {
 
     }
 
-    public static String getMegaFileDownloadUrl(String link, String pass_hash, String noexpire_token, String sid, String reverse) throws IOException, MegaCrypterAPIException {
-        String request = "{\"m\":\"dl\", \"link\": \"" + link + "\"" + (noexpire_token != null ? ", \"noexpire\": \"" + noexpire_token + "\"" : "") + (sid != null ? ", \"sid\": \"" + sid + "\"" : "") + (reverse != null ? ", \"reverse\": \"" + reverse + "\"" : "") + "}";
+    public static String getMegaFileDownloadUrl(String link, String pass_hash, String noexpire_token, String sid,
+            String reverse) throws IOException, MegaCrypterAPIException {
+        String request = "{\"m\":\"dl\", \"link\": \"" + link + "\""
+                + (noexpire_token != null ? ", \"noexpire\": \"" + noexpire_token + "\"" : "")
+                + (sid != null ? ", \"sid\": \"" + sid + "\"" : "")
+                + (reverse != null ? ", \"reverse\": \"" + reverse + "\"" : "") + "}";
 
         URL url_api = new URL(findFirstRegex("https?://[^/]+", link, 0) + "/api");
 
@@ -127,7 +134,8 @@ public class MegaCrypterAPI {
             try {
                 String pass = (String) res_map.get("pass");
 
-                byte[] decrypted_url = aes_cbc_decrypt_pkcs7(BASE642Bin(dl_url), BASE642Bin(pass_hash), BASE642Bin(pass));
+                byte[] decrypted_url = aes_cbc_decrypt_pkcs7(BASE642Bin(dl_url), BASE642Bin(pass_hash),
+                        BASE642Bin(pass));
 
                 dl_url = new String(decrypted_url, "UTF-8");
 
@@ -143,8 +151,10 @@ public class MegaCrypterAPI {
         return dl_url;
     }
 
-    public static String[] getMegaFileMetadata(String link, MainPanelView panel, String reverse) throws MegaCrypterAPIException, MalformedURLException, IOException {
-        String request = "{\"m\":\"info\", \"link\": \"" + link + "\"" + (reverse != null ? ", \"reverse\": \"" + reverse + "\"" : "") + "}";
+    public static String[] getMegaFileMetadata(String link, MainPanelView panel, String reverse)
+            throws MegaCrypterAPIException, MalformedURLException, IOException {
+        String request = "{\"m\":\"info\", \"link\": \"" + link + "\""
+                + (reverse != null ? ", \"reverse\": \"" + reverse + "\"" : "") + "}";
 
         URL url_api = new URL(findFirstRegex("https?://[^/]+", link, 0) + "/api");
 
@@ -313,7 +323,7 @@ public class MegaCrypterAPI {
             fname = fpath + fname;
         }
 
-        String file_data[] = {fname, file_size, fkey, pass, noexpire_token};
+        String file_data[] = { fname, file_size, fkey, pass, noexpire_token };
 
         return file_data;
     }

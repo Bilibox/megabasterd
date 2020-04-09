@@ -101,7 +101,9 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
     private final Object _progress_watchdog_lock;
     private final boolean _priority;
 
-    public Download(MainPanel main_panel, MegaAPI ma, String url, String download_path, String file_name, String file_key, Long file_size, String file_pass, String file_noexpire, boolean use_slots, boolean restart, String custom_chunks_dir, boolean priority) {
+    public Download(MainPanel main_panel, MegaAPI ma, String url, String download_path, String file_name,
+            String file_key, Long file_size, String file_pass, String file_noexpire, boolean use_slots, boolean restart,
+            String custom_chunks_dir, boolean priority) {
 
         _priority = priority;
         _paused_workers = 0;
@@ -217,7 +219,8 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
 
     public long calculateLastWrittenChunk(long temp_file_size) {
         if (temp_file_size > 3584 * 1024) {
-            return 7 + (long) Math.floor((float) (temp_file_size - 3584 * 1024) / (1024 * 1024 * (this.isUse_slots() ? Download.CHUNK_SIZE_MULTI : 1)));
+            return 7 + (long) Math.floor((float) (temp_file_size - 3584 * 1024)
+                    / (1024 * 1024 * (this.isUse_slots() ? Download.CHUNK_SIZE_MULTI : 1)));
         } else {
             long i = 0, tot = 0;
 
@@ -562,7 +565,8 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
 
                     if (!_exit) {
 
-                        String temp_filename = (getCustom_chunks_dir() != null ? getCustom_chunks_dir() : _download_path) + "/" + _file_name + ".mctemp";
+                        String temp_filename = (getCustom_chunks_dir() != null ? getCustom_chunks_dir()
+                                : _download_path) + "/" + _file_name + ".mctemp";
 
                         _file = new File(temp_filename);
 
@@ -579,11 +583,13 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
 
                             if (max_size != _file.length()) {
 
-                                LOG.log(Level.INFO, "{0} Downloader truncating mctemp file {1} -> {2} ", new Object[]{Thread.currentThread().getName(), _file.length(), max_size});
+                                LOG.log(Level.INFO, "{0} Downloader truncating mctemp file {1} -> {2} ",
+                                        new Object[] { Thread.currentThread().getName(), _file.length(), max_size });
 
                                 getView().printStatusNormal("Truncating temp file...");
 
-                                try (FileChannel out_truncate = new FileOutputStream(temp_filename, true).getChannel()) {
+                                try (FileChannel out_truncate = new FileOutputStream(temp_filename, true)
+                                        .getChannel()) {
                                     out_truncate.truncate(max_size);
                                 }
                             }
@@ -623,7 +629,8 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
                                 }
 
                                 swingInvoke(() -> {
-                                    for (JComponent c : new JComponent[]{getView().getSlots_label(), getView().getSlots_spinner(), getView().getSlot_status_label()}) {
+                                    for (JComponent c : new JComponent[] { getView().getSlots_label(),
+                                            getView().getSlots_spinner(), getView().getSlot_status_label() }) {
 
                                         c.setVisible(true);
                                     }
@@ -638,17 +645,22 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
                                 _thread_pool.execute(c);
 
                                 swingInvoke(() -> {
-                                    for (JComponent c1 : new JComponent[]{getView().getSlots_label(), getView().getSlots_spinner(), getView().getSlot_status_label()}) {
+                                    for (JComponent c1 : new JComponent[] { getView().getSlots_label(),
+                                            getView().getSlots_spinner(), getView().getSlot_status_label() }) {
                                         c1.setVisible(false);
                                     }
                                 });
                             }
                         }
 
-                        getView().printStatusNormal(LabelTranslatorSingleton.getInstance().translate("Downloading file from mega ") + (_ma.getFull_email() != null ? "(" + _ma.getFull_email() + ")" : "") + " ...");
+                        getView().printStatusNormal(
+                                LabelTranslatorSingleton.getInstance().translate("Downloading file from mega ")
+                                        + (_ma.getFull_email() != null ? "(" + _ma.getFull_email() + ")" : "")
+                                        + " ...");
 
                         swingInvoke(() -> {
-                            for (JComponent c : new JComponent[]{getView().getPause_button(), getView().getProgress_pbar()}) {
+                            for (JComponent c : new JComponent[] { getView().getPause_button(),
+                                    getView().getProgress_pbar() }) {
 
                                 c.setVisible(true);
                             }
@@ -656,7 +668,8 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
 
                         THREAD_POOL.execute(() -> {
 
-                            //PROGRESS WATCHDOG If a download remains more than PROGRESS_WATCHDOG_TIMEOUT seconds without receiving data, we force fatal error in order to restart it.
+                            // PROGRESS WATCHDOG If a download remains more than PROGRESS_WATCHDOG_TIMEOUT
+                            // seconds without receiving data, we force fatal error in order to restart it.
                             LOG.log(Level.INFO, "{0} PROGRESS WATCHDOG HELLO!", Thread.currentThread().getName());
 
                             long last_progress, progress = getProgress();
@@ -674,13 +687,16 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
                                     }
                                 }
 
-                            } while (!isExit() && !_thread_pool.isShutdown() && progress < getFile_size() && (isPaused() || progress > last_progress));
+                            } while (!isExit() && !_thread_pool.isShutdown() && progress < getFile_size()
+                                    && (isPaused() || progress > last_progress));
 
-                            if (!isExit() && !_thread_pool.isShutdown() && _status_error == null && progress < getFile_size() && progress <= last_progress) {
+                            if (!isExit() && !_thread_pool.isShutdown() && _status_error == null
+                                    && progress < getFile_size() && progress <= last_progress) {
                                 stopDownloader("PROGRESS WATCHDOG TIMEOUT!");
 
                                 if (MainPanel.getProxy_manager() != null) {
-                                    MainPanel.getProxy_manager().refreshProxyList(); //Force SmartProxy proxy list refresh
+                                    MainPanel.getProxy_manager().refreshProxyList(); // Force SmartProxy proxy list
+                                                                                     // refresh
                                 }
                             }
 
@@ -700,7 +716,8 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
 
                             _thread_pool.shutdown();
 
-                            LOG.log(Level.INFO, "{0} Waiting all threads to finish...", Thread.currentThread().getName());
+                            LOG.log(Level.INFO, "{0} Waiting all threads to finish...",
+                                    Thread.currentThread().getName());
 
                             _thread_pool.awaitTermination(MAX_WAIT_WORKERS_SHUTDOWN, TimeUnit.SECONDS);
 
@@ -710,7 +727,8 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
 
                         if (!_thread_pool.isTerminated()) {
 
-                            LOG.log(Level.INFO, "{0} Closing thread pool ''mecag\u00fcen'' style...", Thread.currentThread().getName());
+                            LOG.log(Level.INFO, "{0} Closing thread pool ''mecag\u00fcen'' style...",
+                                    Thread.currentThread().getName());
 
                             _thread_pool.shutdownNow();
                         }
@@ -722,7 +740,9 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
                         _output_stream.close();
 
                         swingInvoke(() -> {
-                            for (JComponent c : new JComponent[]{getView().getSpeed_label(), getView().getPause_button(), getView().getStop_button(), getView().getSlots_label(), getView().getSlots_spinner(), getView().getKeep_temp_checkbox()}) {
+                            for (JComponent c : new JComponent[] { getView().getSpeed_label(),
+                                    getView().getPause_button(), getView().getStop_button(), getView().getSlots_label(),
+                                    getView().getSlots_spinner(), getView().getKeep_temp_checkbox() }) {
 
                                 c.setVisible(false);
                             }
@@ -735,13 +755,15 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
                                 throw new IOException("El tamaño del fichero es incorrecto!");
                             }
 
-                            Files.move(Paths.get(_file.getAbsolutePath()), Paths.get(filename), StandardCopyOption.REPLACE_EXISTING);
+                            Files.move(Paths.get(_file.getAbsolutePath()), Paths.get(filename),
+                                    StandardCopyOption.REPLACE_EXISTING);
 
                             if (_custom_chunks_dir != null) {
 
                                 File temp_parent_download_dir = new File(temp_filename).getParentFile();
 
-                                while (!temp_parent_download_dir.getAbsolutePath().equals(_custom_chunks_dir) && temp_parent_download_dir.listFiles().length == 0) {
+                                while (!temp_parent_download_dir.getAbsolutePath().equals(_custom_chunks_dir)
+                                        && temp_parent_download_dir.listFiles().length == 0) {
                                     temp_parent_download_dir.delete();
                                     temp_parent_download_dir = temp_parent_download_dir.getParentFile();
                                 }
@@ -762,7 +784,8 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
                                 swingInvoke(() -> {
                                     getView().getStop_button().setVisible(true);
 
-                                    getView().getStop_button().setText(LabelTranslatorSingleton.getInstance().translate("CANCEL CHECK"));
+                                    getView().getStop_button()
+                                            .setText(LabelTranslatorSingleton.getInstance().translate("CANCEL CHECK"));
                                 });
 
                                 getMain_panel().getDownload_manager().getTransference_running_list().remove(this);
@@ -781,7 +804,8 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
 
                                 } else {
 
-                                    getView().printStatusOK("File successfully downloaded! (but integrity check CANCELED)");
+                                    getView().printStatusOK(
+                                            "File successfully downloaded! (but integrity check CANCELED)");
 
                                 }
 
@@ -883,7 +907,8 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
 
                 File parent_download_dir = new File(getDownload_path() + "/" + getFile_name()).getParentFile();
 
-                while (!parent_download_dir.getAbsolutePath().equals(getDownload_path()) && parent_download_dir.listFiles().length == 0) {
+                while (!parent_download_dir.getAbsolutePath().equals(getDownload_path())
+                        && parent_download_dir.listFiles().length == 0) {
                     parent_download_dir.delete();
                     parent_download_dir = parent_download_dir.getParentFile();
                 }
@@ -926,7 +951,8 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
 
             } else {
 
-                getView().getClose_button().setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-ok-30.png")));
+                getView().getClose_button()
+                        .setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-ok-30.png")));
             }
         });
 
@@ -944,7 +970,8 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
                     }
                 }
                 if (!_closed) {
-                    LOG.log(Level.INFO, "{0} Downloader {1} AUTO RESTARTING DOWNLOAD...", new Object[]{Thread.currentThread().getName(), getFile_name()});
+                    LOG.log(Level.INFO, "{0} Downloader {1} AUTO RESTARTING DOWNLOAD...",
+                            new Object[] { Thread.currentThread().getName(), getFile_name() });
                     restart();
                 }
             });
@@ -956,7 +983,8 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
             _progress_watchdog_lock.notifyAll();
         }
 
-        LOG.log(Level.INFO, "{0}{1} Downloader: bye bye", new Object[]{Thread.currentThread().getName(), _file_name});
+        LOG.log(Level.INFO, "{0}{1} Downloader: bye bye",
+                new Object[] { Thread.currentThread().getName(), _file_name });
     }
 
     public void provisionIt(boolean retry) throws APIException {
@@ -975,7 +1003,7 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
         try {
             if (_file_name == null) {
 
-                //New single file links
+                // New single file links
                 file_info = getMegaFileMetadata(_url, getMain_panel().getView(), retry);
 
                 if (file_info != null) {
@@ -995,24 +1023,27 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
 
                     try {
 
-                        insertDownload(_url, _ma.getFull_email(), _download_path, _file_name, _file_key, _file_size, _file_pass, _file_noexpire, _custom_chunks_dir);
+                        insertDownload(_url, _ma.getFull_email(), _download_path, _file_name, _file_key, _file_size,
+                                _file_pass, _file_noexpire, _custom_chunks_dir);
 
                         _provision_ok = true;
 
                     } catch (SQLException ex) {
 
-                        _status_error = "Error registering download: " + ex.getMessage() + " file is already downloading?";
+                        _status_error = "Error registering download: " + ex.getMessage()
+                                + " file is already downloading?";
                     }
 
                 }
             } else {
 
-                //Resuming single file links and new/resuming folder links
+                // Resuming single file links and new/resuming folder links
                 try {
 
-                    deleteDownload(_url); //If resuming
+                    deleteDownload(_url); // If resuming
 
-                    insertDownload(_url, _ma.getFull_email(), _download_path, _file_name, _file_key, _file_size, _file_pass, _file_noexpire, _custom_chunks_dir);
+                    insertDownload(_url, _ma.getFull_email(), _download_path, _file_name, _file_key, _file_size,
+                            _file_pass, _file_noexpire, _custom_chunks_dir);
 
                     _provision_ok = true;
 
@@ -1099,7 +1130,8 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
                 getView().printStatusNormal("Download paused!");
 
                 swingInvoke(() -> {
-                    getView().getPause_button().setText(LabelTranslatorSingleton.getInstance().translate("RESUME DOWNLOAD"));
+                    getView().getPause_button()
+                            .setText(LabelTranslatorSingleton.getInstance().translate("RESUME DOWNLOAD"));
                     getView().getPause_button().setEnabled(true);
                 });
 
@@ -1143,7 +1175,14 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
                         download_url = _ma.getMegaFileDownloadUrl(_url);
 
                     } else {
-                        download_url = MegaCrypterAPI.getMegaFileDownloadUrl(_url, _file_pass, _file_noexpire, _ma.getSid(), getMain_panel().getMega_proxy_server() != null ? (getMain_panel().getMega_proxy_server().getPort() + ":" + Bin2BASE64(("megacrypter:" + getMain_panel().getMega_proxy_server().getPassword()).getBytes("UTF-8")) + ":" + MiscTools.getMyPublicIP()) : null);
+                        download_url = MegaCrypterAPI.getMegaFileDownloadUrl(_url, _file_pass, _file_noexpire,
+                                _ma.getSid(),
+                                getMain_panel().getMega_proxy_server() != null
+                                        ? (getMain_panel().getMega_proxy_server().getPort() + ":" + Bin2BASE64(
+                                                ("megacrypter:" + getMain_panel().getMega_proxy_server().getPassword())
+                                                        .getBytes("UTF-8"))
+                                                + ":" + MiscTools.getMyPublicIP())
+                                        : null);
                     }
 
                     if (checkMegaDownloadUrl(download_url)) {
@@ -1266,7 +1305,8 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
                     getView().printStatusNormal("Download paused!");
 
                     swingInvoke(() -> {
-                        getView().getPause_button().setText(LabelTranslatorSingleton.getInstance().translate("RESUME DOWNLOAD"));
+                        getView().getPause_button()
+                                .setText(LabelTranslatorSingleton.getInstance().translate("RESUME DOWNLOAD"));
 
                         getView().getPause_button().setEnabled(true);
                     });
@@ -1277,17 +1317,19 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
 
     }
 
-    private boolean verifyFileCBCMAC(String filename) throws FileNotFoundException, Exception, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+    private boolean verifyFileCBCMAC(String filename)
+            throws FileNotFoundException, Exception, NoSuchAlgorithmException, NoSuchPaddingException,
+            InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 
         int old_thread_priority = Thread.currentThread().getPriority();
 
         Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
 
         int[] int_key = bin2i32a(UrlBASE642Bin(_file_key));
-        int[] iv = new int[]{int_key[4], int_key[5]};
-        int[] meta_mac = new int[]{int_key[6], int_key[7]};
-        int[] file_mac = {0, 0, 0, 0};
-        int[] cbc_iv = {0, 0, 0, 0};
+        int[] iv = new int[] { int_key[4], int_key[5] };
+        int[] meta_mac = new int[] { int_key[6], int_key[7] };
+        int[] file_mac = { 0, 0, 0, 0 };
+        int[] cbc_iv = { 0, 0, 0, 0 };
 
         byte[] byte_file_key = initMEGALinkKey(getFile_key());
 
@@ -1307,7 +1349,8 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
 
                     long chunk_offset = ChunkWriterManager.calculateChunkOffset(chunk_id, 1);
 
-                    long chunk_size = ChunkWriterManager.calculateChunkSize(chunk_id, this.getFile_size(), chunk_offset, 1);
+                    long chunk_size = ChunkWriterManager.calculateChunkSize(chunk_id, this.getFile_size(), chunk_offset,
+                            1);
 
                     ChunkWriterManager.checkChunkID(chunk_id, this.getFile_size(), chunk_offset);
 
@@ -1356,7 +1399,7 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
 
             }
 
-            int[] cbc = {file_mac[0] ^ file_mac[1], file_mac[2] ^ file_mac[3]};
+            int[] cbc = { file_mac[0] ^ file_mac[1], file_mac[2] ^ file_mac[3] };
 
             Thread.currentThread().setPriority(old_thread_priority);
 
@@ -1396,7 +1439,8 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
 
     public void stopDownloader(String reason) {
 
-        _status_error = (reason != null ? LabelTranslatorSingleton.getInstance().translate("FATAL ERROR! ") + reason : LabelTranslatorSingleton.getInstance().translate("FATAL ERROR! "));
+        _status_error = (reason != null ? LabelTranslatorSingleton.getInstance().translate("FATAL ERROR! ") + reason
+                : LabelTranslatorSingleton.getInstance().translate("FATAL ERROR! "));
 
         stopDownloader();
     }
@@ -1435,7 +1479,14 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
 
                 } else {
 
-                    file_info = MegaCrypterAPI.getMegaFileMetadata(link, panel, getMain_panel().getMega_proxy_server() != null ? (getMain_panel().getMega_proxy_server().getPort() + ":" + Bin2BASE64(("megacrypter:" + getMain_panel().getMega_proxy_server().getPassword()).getBytes("UTF-8"))) : null);
+                    file_info = MegaCrypterAPI
+                            .getMegaFileMetadata(link, panel,
+                                    getMain_panel().getMega_proxy_server() != null
+                                            ? (getMain_panel().getMega_proxy_server().getPort() + ":"
+                                                    + Bin2BASE64(("megacrypter:"
+                                                            + getMain_panel().getMega_proxy_server().getPassword())
+                                                                    .getBytes("UTF-8")))
+                                            : null);
                 }
 
             } catch (APIException ex) {
@@ -1466,14 +1517,19 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
 
                         getView().getStop_button().setVisible(true);
 
-                        getView().getStop_button().setText(LabelTranslatorSingleton.getInstance().translate("CANCEL RETRY"));
+                        getView().getStop_button()
+                                .setText(LabelTranslatorSingleton.getInstance().translate("CANCEL RETRY"));
                     });
 
                     for (long i = getWaitTimeExpBackOff(retry++); i > 0 && !_exit; i--) {
                         if (error_code == -18) {
-                            getView().printStatusError(LabelTranslatorSingleton.getInstance().translate("File temporarily unavailable! (Retrying in ") + i + LabelTranslatorSingleton.getInstance().translate(" secs...)"));
+                            getView().printStatusError(LabelTranslatorSingleton.getInstance()
+                                    .translate("File temporarily unavailable! (Retrying in ") + i
+                                    + LabelTranslatorSingleton.getInstance().translate(" secs...)"));
                         } else {
-                            getView().printStatusError("Mega/MC APIException error " + ex.getMessage() + LabelTranslatorSingleton.getInstance().translate(" (Retrying in ") + i + LabelTranslatorSingleton.getInstance().translate(" secs...)"));
+                            getView().printStatusError("Mega/MC APIException error " + ex.getMessage()
+                                    + LabelTranslatorSingleton.getInstance().translate(" (Retrying in ") + i
+                                    + LabelTranslatorSingleton.getInstance().translate(" secs...)"));
                         }
 
                         try {
@@ -1524,7 +1580,13 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
                     dl_url = _ma.getMegaFileDownloadUrl(link);
 
                 } else {
-                    dl_url = MegaCrypterAPI.getMegaFileDownloadUrl(link, _file_pass, _file_noexpire, _ma.getSid(), getMain_panel().getMega_proxy_server() != null ? (getMain_panel().getMega_proxy_server().getPort() + ":" + Bin2BASE64(("megacrypter:" + getMain_panel().getMega_proxy_server().getPassword()).getBytes("UTF-8")) + ":" + MiscTools.getMyPublicIP()) : null);
+                    dl_url = MegaCrypterAPI.getMegaFileDownloadUrl(link, _file_pass, _file_noexpire, _ma.getSid(),
+                            getMain_panel().getMega_proxy_server() != null
+                                    ? (getMain_panel().getMega_proxy_server().getPort() + ":" + Bin2BASE64(
+                                            ("megacrypter:" + getMain_panel().getMega_proxy_server().getPassword())
+                                                    .getBytes("UTF-8"))
+                                            + ":" + MiscTools.getMyPublicIP())
+                                    : null);
                 }
 
             } catch (APIException ex) {
@@ -1545,14 +1607,16 @@ public class Download implements Transference, Runnable, SecureSingleThreadNotif
                     swingInvoke(() -> {
                         getView().getStop_button().setVisible(true);
 
-                        getView().getStop_button().setText(LabelTranslatorSingleton.getInstance().translate("CANCEL RETRY"));
+                        getView().getStop_button()
+                                .setText(LabelTranslatorSingleton.getInstance().translate("CANCEL RETRY"));
                     });
 
                     for (long i = getWaitTimeExpBackOff(retry++); i > 0 && !_exit; i--) {
                         if (error_code == -18) {
                             getView().printStatusError("File temporarily unavailable! (Retrying in " + i + " secs...)");
                         } else {
-                            getView().printStatusError("Mega/MC APIException error " + ex.getMessage() + " (Retrying in " + i + " secs...)");
+                            getView().printStatusError("Mega/MC APIException error " + ex.getMessage()
+                                    + " (Retrying in " + i + " secs...)");
                         }
 
                         try {

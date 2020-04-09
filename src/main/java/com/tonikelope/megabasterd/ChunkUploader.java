@@ -102,7 +102,8 @@ public class ChunkUploader implements Runnable, SecureSingleThreadNotifiable {
     @Override
     public void run() {
 
-        LOG.log(Level.INFO, "{0} ChunkUploader {1} hello! {2}", new Object[]{Thread.currentThread().getName(), getId(), _upload.getFile_name()});
+        LOG.log(Level.INFO, "{0} ChunkUploader {1} hello! {2}",
+                new Object[] { Thread.currentThread().getName(), getId(), _upload.getFile_name() });
 
         long chunk_id = 0;
 
@@ -114,7 +115,8 @@ public class ChunkUploader implements Runnable, SecureSingleThreadNotifiable {
 
         try {
 
-            while (!_upload.getMain_panel().isExit() && !_exit && !_upload.isStopped() && conta_error < MAX_CHUNK_ERROR && !fatal_error) {
+            while (!_upload.getMain_panel().isExit() && !_exit && !_upload.isStopped() && conta_error < MAX_CHUNK_ERROR
+                    && !fatal_error) {
 
                 if (_upload.isPaused() && !_upload.isStopped()) {
 
@@ -134,11 +136,13 @@ public class ChunkUploader implements Runnable, SecureSingleThreadNotifiable {
 
                 long chunk_offset = ChunkWriterManager.calculateChunkOffset(chunk_id, Upload.CHUNK_SIZE_MULTI);
 
-                long chunk_size = ChunkWriterManager.calculateChunkSize(chunk_id, _upload.getFile_size(), chunk_offset, Upload.CHUNK_SIZE_MULTI);
+                long chunk_size = ChunkWriterManager.calculateChunkSize(chunk_id, _upload.getFile_size(), chunk_offset,
+                        Upload.CHUNK_SIZE_MULTI);
 
                 ChunkWriterManager.checkChunkID(chunk_id, _upload.getFile_size(), chunk_offset);
 
-                String chunk_url = ChunkWriterManager.genChunkUrl(worker_url, _upload.getFile_size(), chunk_offset, chunk_size);
+                String chunk_url = ChunkWriterManager.genChunkUrl(worker_url, _upload.getFile_size(), chunk_offset,
+                        chunk_size);
 
                 URL url = new URL(chunk_url);
 
@@ -146,11 +150,13 @@ public class ChunkUploader implements Runnable, SecureSingleThreadNotifiable {
 
                 if (MainPanel.isUse_proxy()) {
 
-                    con = (HttpURLConnection) url.openConnection(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(MainPanel.getProxy_host(), MainPanel.getProxy_port())));
+                    con = (HttpURLConnection) url.openConnection(new Proxy(Proxy.Type.HTTP,
+                            new InetSocketAddress(MainPanel.getProxy_host(), MainPanel.getProxy_port())));
 
                     if (MainPanel.getProxy_user() != null && !"".equals(MainPanel.getProxy_user())) {
 
-                        con.setRequestProperty("Proxy-Authorization", "Basic " + MiscTools.Bin2BASE64((MainPanel.getProxy_user() + ":" + MainPanel.getProxy_pass()).getBytes("UTF-8")));
+                        con.setRequestProperty("Proxy-Authorization", "Basic " + MiscTools.Bin2BASE64(
+                                (MainPanel.getProxy_user() + ":" + MainPanel.getProxy_pass()).getBytes("UTF-8")));
                     }
                 } else {
 
@@ -185,9 +191,15 @@ public class ChunkUploader implements Runnable, SecureSingleThreadNotifiable {
 
                         f.seek(chunk_offset);
 
-                        try (CipherInputStream cis = new CipherInputStream(new BufferedInputStream(Channels.newInputStream(f.getChannel())), genCrypter("AES", "AES/CTR/NoPadding", _upload.getByte_file_key(), forwardMEGALinkKeyIV(_upload.getByte_file_iv(), chunk_offset))); OutputStream out = new ThrottledOutputStream(con.getOutputStream(), _upload.getMain_panel().getStream_supervisor())) {
+                        try (CipherInputStream cis = new CipherInputStream(
+                                new BufferedInputStream(Channels.newInputStream(f.getChannel())),
+                                genCrypter("AES", "AES/CTR/NoPadding", _upload.getByte_file_key(),
+                                        forwardMEGALinkKeyIV(_upload.getByte_file_iv(), chunk_offset)));
+                                OutputStream out = new ThrottledOutputStream(con.getOutputStream(),
+                                        _upload.getMain_panel().getStream_supervisor())) {
 
-                            LOG.log(Level.INFO, "{0} Uploading chunk {1} from worker {2} {3}...", new Object[]{Thread.currentThread().getName(), chunk_id, _id, _upload.getFile_name()});
+                            LOG.log(Level.INFO, "{0} Uploading chunk {1} from worker {2} {3}...", new Object[] {
+                                    Thread.currentThread().getName(), chunk_id, _id, _upload.getFile_name() });
 
                             while (!_exit && tot_bytes_up < chunk_size && (reads = cis.read(buffer)) != -1) {
                                 out.write(buffer, 0, reads);
@@ -212,18 +224,21 @@ public class ChunkUploader implements Runnable, SecureSingleThreadNotifiable {
 
                             if ((http_status = con.getResponseCode()) != 200) {
 
-                                LOG.log(Level.INFO, "{0} Worker {1} Failed : HTTP error code : {2} {3}", new Object[]{Thread.currentThread().getName(), _id, http_status, _upload.getFile_name()});
+                                LOG.log(Level.INFO, "{0} Worker {1} Failed : HTTP error code : {2} {3}", new Object[] {
+                                        Thread.currentThread().getName(), _id, http_status, _upload.getFile_name() });
 
                             } else if (tot_bytes_up == chunk_size || reads == -1) {
 
                                 if (_upload.getProgress() == _upload.getFile_size()) {
-                                    _upload.getView().printStatusNormal("Waiting for completion handler ... ***DO NOT EXIT MEGABASTERD NOW***");
+                                    _upload.getView().printStatusNormal(
+                                            "Waiting for completion handler ... ***DO NOT EXIT MEGABASTERD NOW***");
                                     _upload.getView().getPause_button().setEnabled(false);
                                 }
 
                                 String httpresponse;
 
-                                try (InputStream is = con.getInputStream(); ByteArrayOutputStream byte_res = new ByteArrayOutputStream()) {
+                                try (InputStream is = con.getInputStream();
+                                        ByteArrayOutputStream byte_res = new ByteArrayOutputStream()) {
 
                                     while ((reads = is.read(buffer)) != -1) {
                                         byte_res.write(buffer, 0, reads);
@@ -236,20 +251,25 @@ public class ChunkUploader implements Runnable, SecureSingleThreadNotifiable {
 
                                     if (MegaAPI.checkMEGAError(httpresponse) != 0) {
 
-                                        LOG.log(Level.WARNING, "{0} Worker {1} UPLOAD FAILED! (MEGA ERROR: {2}) {3}", new Object[]{Thread.currentThread().getName(), _id, MegaAPI.checkMEGAError(httpresponse), _upload.getFile_name()});
+                                        LOG.log(Level.WARNING, "{0} Worker {1} UPLOAD FAILED! (MEGA ERROR: {2}) {3}",
+                                                new Object[] { Thread.currentThread().getName(), _id,
+                                                        MegaAPI.checkMEGAError(httpresponse), _upload.getFile_name() });
 
                                         fatal_error = true;
 
                                     } else {
 
-                                        LOG.log(Level.INFO, "{0} Worker {1} Completion handler -> {2} {3}", new Object[]{Thread.currentThread().getName(), _id, httpresponse, _upload.getFile_name()});
+                                        LOG.log(Level.INFO, "{0} Worker {1} Completion handler -> {2} {3}",
+                                                new Object[] { Thread.currentThread().getName(), _id, httpresponse,
+                                                        _upload.getFile_name() });
 
                                         _upload.setCompletion_handler(httpresponse);
 
                                         chunk_error = false;
                                     }
 
-                                } else if (_upload.getProgress() != _upload.getFile_size() || _upload.getCompletion_handler() != null) {
+                                } else if (_upload.getProgress() != _upload.getFile_size()
+                                        || _upload.getCompletion_handler() != null) {
 
                                     chunk_error = false;
                                 }
@@ -267,7 +287,8 @@ public class ChunkUploader implements Runnable, SecureSingleThreadNotifiable {
 
                     if (ex instanceof SocketTimeoutException) {
                         timeout = true;
-                        LOG.log(Level.SEVERE, "{0} Worker {1} {2} timeout reading chunk {3}", new Object[]{Thread.currentThread().getName(), _id, _upload.getFile_name(), chunk_id});
+                        LOG.log(Level.SEVERE, "{0} Worker {1} {2} timeout reading chunk {3}", new Object[] {
+                                Thread.currentThread().getName(), _id, _upload.getFile_name(), chunk_id });
 
                     } else {
                         LOG.log(Level.SEVERE, ex.getMessage());
@@ -277,7 +298,8 @@ public class ChunkUploader implements Runnable, SecureSingleThreadNotifiable {
 
                     if (chunk_error) {
 
-                        LOG.log(Level.WARNING, "{0} Uploading chunk {1} from worker {2} FAILED! {3}...", new Object[]{Thread.currentThread().getName(), chunk_id, _id, _upload.getFile_name()});
+                        LOG.log(Level.WARNING, "{0} Uploading chunk {1} from worker {2} FAILED! {3}...", new Object[] {
+                                Thread.currentThread().getName(), chunk_id, _id, _upload.getFile_name() });
 
                         _upload.rejectChunkId(chunk_id);
 
@@ -292,13 +314,15 @@ public class ChunkUploader implements Runnable, SecureSingleThreadNotifiable {
 
                             _upload.stopUploader("UPLOAD FAILED: FATAL ERROR");
 
-                            LOG.log(Level.SEVERE, "UPLOAD FAILED: FATAL ERROR {0}", new Object[]{_upload.getFile_name()});
+                            LOG.log(Level.SEVERE, "UPLOAD FAILED: FATAL ERROR {0}",
+                                    new Object[] { _upload.getFile_name() });
 
                         } else if (++conta_error == MAX_CHUNK_ERROR) {
 
                             _upload.stopUploader("UPLOAD FAILED: too many errors");
 
-                            LOG.log(Level.SEVERE, "UPLOAD FAILED: too many errors {0}", new Object[]{_upload.getFile_name()});
+                            LOG.log(Level.SEVERE, "UPLOAD FAILED: too many errors {0}",
+                                    new Object[] { _upload.getFile_name() });
 
                         } else if (!_exit && !_upload.isStopped() && !timeout) {
 
@@ -320,7 +344,8 @@ public class ChunkUploader implements Runnable, SecureSingleThreadNotifiable {
 
                     } else {
 
-                        LOG.log(Level.INFO, "{0} Worker {1} has uploaded chunk {2} {3}", new Object[]{Thread.currentThread().getName(), _id, chunk_id, _upload.getFile_name()});
+                        LOG.log(Level.INFO, "{0} Worker {1} has uploaded chunk {2} {3}", new Object[] {
+                                Thread.currentThread().getName(), _id, chunk_id, _upload.getFile_name() });
 
                         conta_error = 0;
                     }
@@ -343,7 +368,8 @@ public class ChunkUploader implements Runnable, SecureSingleThreadNotifiable {
 
         _upload.getMac_generator().secureNotify();
 
-        LOG.log(Level.INFO, "{0} ChunkUploader [{1}] {2} bye bye...", new Object[]{Thread.currentThread().getName(), _id, _upload.getFile_name()});
+        LOG.log(Level.INFO, "{0} ChunkUploader [{1}] {2} bye bye...",
+                new Object[] { Thread.currentThread().getName(), _id, _upload.getFile_name() });
 
     }
 

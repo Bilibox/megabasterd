@@ -1,15 +1,12 @@
 package com.tonikelope.megabasterd;
 
 import java.util.HashMap;
-import java.util.logging.Logger;
 
 /**
  *
  * @author tonikelope
  */
 public class ContentType {
-
-    private static final Logger LOG = Logger.getLogger(ContentType.class.getName());
 
     private final HashMap<String, String> _content_type;
 

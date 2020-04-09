@@ -25,38 +25,38 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+        <Group type="102" attributes="0">
+          <EmptySpace max="-2" attributes="0"/>
+          <Group type="103" groupAlignment="0" attributes="0">
+            <Group type="102" alignment="1" attributes="0">
+              <Component id="use_mega_account_down_label" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="use_mega_account_down_label" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="use_mega_account_down_combobox" max="32767" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="dance_button" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="put_label" alignment="0" max="32767" attributes="0"/>
-                  <Component id="original_link_textfield" alignment="0" min="-2" pref="1000" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <Component id="use_mega_account_down_combobox" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="dance_button" min="-2" max="-2" attributes="0"/>
+            </Group>
+            <Component id="put_label" alignment="0" max="32767" attributes="0"/>
+            <Component id="original_link_textfield" alignment="0" min="-2" pref="1000" max="-2" attributes="0"/>
           </Group>
+          <EmptySpace max="-2" attributes="0"/>
+        </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="put_label" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="original_link_textfield" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="dance_button" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="use_mega_account_down_combobox" alignment="3" max="-2" attributes="0"/>
-                  <Component id="use_mega_account_down_label" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+        <Group type="102" alignment="1" attributes="0">
+          <EmptySpace min="-2" max="-2" attributes="0"/>
+          <Component id="put_label" min="-2" max="-2" attributes="0"/>
+          <EmptySpace max="-2" attributes="0"/>
+          <Component id="original_link_textfield" min="-2" max="-2" attributes="0"/>
+          <EmptySpace type="unrelated" max="32767" attributes="0"/>
+          <Group type="103" groupAlignment="3" attributes="0">
+            <Component id="dance_button" alignment="3" min="-2" max="-2" attributes="0"/>
+            <Component id="use_mega_account_down_combobox" alignment="3" max="-2" attributes="0"/>
+            <Component id="use_mega_account_down_label" alignment="3" min="-2" max="-2" attributes="0"/>
           </Group>
+          <EmptySpace min="-2" max="-2" attributes="0"/>
+        </Group>
       </Group>
     </DimensionLayout>
   </Layout>

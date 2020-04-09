@@ -67,17 +67,13 @@ public class SpeedMeter implements Runnable {
     private String calcRemTime(long seconds) {
         int days = (int) TimeUnit.SECONDS.toDays(seconds);
 
-        long hours = TimeUnit.SECONDS.toHours(seconds)
-                - TimeUnit.DAYS.toHours(days);
+        long hours = TimeUnit.SECONDS.toHours(seconds) - TimeUnit.DAYS.toHours(days);
 
-        long minutes = TimeUnit.SECONDS.toMinutes(seconds)
-                - TimeUnit.DAYS.toMinutes(days)
+        long minutes = TimeUnit.SECONDS.toMinutes(seconds) - TimeUnit.DAYS.toMinutes(days)
                 - TimeUnit.HOURS.toMinutes(hours);
 
-        long secs = TimeUnit.SECONDS.toSeconds(seconds)
-                - TimeUnit.DAYS.toSeconds(days)
-                - TimeUnit.HOURS.toSeconds(hours)
-                - TimeUnit.MINUTES.toSeconds(minutes);
+        long secs = TimeUnit.SECONDS.toSeconds(seconds) - TimeUnit.DAYS.toSeconds(days)
+                - TimeUnit.HOURS.toSeconds(hours) - TimeUnit.MINUTES.toSeconds(minutes);
 
         return String.format("%dd %d:%02d:%02d", days, hours, minutes, secs);
     }
@@ -182,12 +178,15 @@ public class SpeedMeter implements Runnable {
 
                         _speed_label.setText(formatBytes(global_speed) + "/s");
 
-                        _rem_label.setText(formatBytes(global_progress) + "/" + formatBytes(global_size) + " @ " + formatBytes(avg_global_speed) + "/s @ " + calcRemTime((long) Math.floor((global_size - global_progress) / avg_global_speed)));
+                        _rem_label.setText(formatBytes(global_progress) + "/" + formatBytes(global_size) + " @ "
+                                + formatBytes(avg_global_speed) + "/s @ "
+                                + calcRemTime((long) Math.floor((global_size - global_progress) / avg_global_speed)));
 
                     } else {
 
                         _speed_label.setText("------");
-                        _rem_label.setText(formatBytes(global_progress) + "/" + formatBytes(global_size) + " @ --d --:--:--");
+                        _rem_label.setText(
+                                formatBytes(global_progress) + "/" + formatBytes(global_size) + " @ --d --:--:--");
 
                     }
 

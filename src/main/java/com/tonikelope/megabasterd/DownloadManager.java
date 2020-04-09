@@ -19,7 +19,9 @@ public class DownloadManager extends TransferenceManager {
 
     public DownloadManager(MainPanel main_panel) {
 
-        super(main_panel, main_panel.getMax_dl(), main_panel.getView().getStatus_down_label(), main_panel.getView().getjPanel_scroll_down(), main_panel.getView().getClose_all_finished_down_button(), main_panel.getView().getPause_all_down_button(), main_panel.getView().getClean_all_down_menu());
+        super(main_panel, main_panel.getMax_dl(), main_panel.getView().getStatus_down_label(),
+                main_panel.getView().getjPanel_scroll_down(), main_panel.getView().getClose_all_finished_down_button(),
+                main_panel.getView().getPause_all_down_button(), main_panel.getView().getClean_all_down_menu());
     }
 
     @Override
@@ -78,7 +80,8 @@ public class DownloadManager extends TransferenceManager {
 
         } catch (APIException ex) {
 
-            LOG.log(Level.INFO, "{0} Provision failed! Retrying in separated thread...", Thread.currentThread().getName());
+            LOG.log(Level.INFO, "{0} Provision failed! Retrying in separated thread...",
+                    Thread.currentThread().getName());
 
             THREAD_POOL.execute(() -> {
                 try {

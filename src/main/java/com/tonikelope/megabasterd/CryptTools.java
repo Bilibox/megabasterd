@@ -42,7 +42,7 @@ import javax.swing.JOptionPane;
  */
 public class CryptTools {
 
-    public static final int[] AES_ZERO_IV_I32A = {0, 0, 0, 0};
+    public static final int[] AES_ZERO_IV_I32A = { 0, 0, 0, 0 };
 
     public static final byte[] AES_ZERO_IV = i32a2bin(AES_ZERO_IV_I32A);
 
@@ -51,9 +51,9 @@ public class CryptTools {
     public static final int MASTER_PASSWORD_PBKDF2_OUTPUT_BIT_LENGTH = 256;
 
     public static final int MASTER_PASSWORD_PBKDF2_ITERATIONS = 65536;
-    private static final Logger LOG = Logger.getLogger(CryptTools.class.getName());
 
-    public static Cipher genDecrypter(String algo, String mode, byte[] key, byte[] iv) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+    public static Cipher genDecrypter(String algo, String mode, byte[] key, byte[] iv) throws NoSuchAlgorithmException,
+            NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
         SecretKeySpec skeySpec = new SecretKeySpec(key, algo);
 
         Cipher decryptor = Cipher.getInstance(mode);
@@ -72,7 +72,8 @@ public class CryptTools {
         return decryptor;
     }
 
-    public static Cipher genCrypter(String algo, String mode, byte[] key, byte[] iv) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+    public static Cipher genCrypter(String algo, String mode, byte[] key, byte[] iv) throws NoSuchAlgorithmException,
+            NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
         SecretKeySpec skeySpec = new SecretKeySpec(key, algo);
 
         Cipher cryptor = Cipher.getInstance(mode);
@@ -91,87 +92,113 @@ public class CryptTools {
         return cryptor;
     }
 
-    public static byte[] aes_cbc_encrypt_nopadding(byte[] data, byte[] key, byte[] iv) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+    public static byte[] aes_cbc_encrypt_nopadding(byte[] data, byte[] key, byte[] iv)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 
         Cipher cryptor = CryptTools.genCrypter("AES", "AES/CBC/NoPadding", key, iv);
 
         return cryptor.doFinal(data);
     }
 
-    public static byte[] aes_cbc_encrypt_pkcs7(byte[] data, byte[] key, byte[] iv) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+    public static byte[] aes_cbc_encrypt_pkcs7(byte[] data, byte[] key, byte[] iv)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 
         Cipher cryptor = CryptTools.genCrypter("AES", "AES/CBC/PKCS5Padding", key, iv);
 
         return cryptor.doFinal(data);
     }
 
-    public static byte[] aes_cbc_decrypt_nopadding(byte[] data, byte[] key, byte[] iv) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+    public static byte[] aes_cbc_decrypt_nopadding(byte[] data, byte[] key, byte[] iv)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 
         Cipher decryptor = CryptTools.genDecrypter("AES", "AES/CBC/NoPadding", key, iv);
 
         return decryptor.doFinal(data);
     }
 
-    public static byte[] aes_cbc_decrypt_pkcs7(byte[] data, byte[] key, byte[] iv) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+    public static byte[] aes_cbc_decrypt_pkcs7(byte[] data, byte[] key, byte[] iv)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 
         Cipher decryptor = CryptTools.genDecrypter("AES", "AES/CBC/PKCS5Padding", key, iv);
 
         return decryptor.doFinal(data);
     }
 
-    public static byte[] aes_ecb_encrypt_nopadding(byte[] data, byte[] key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+    public static byte[] aes_ecb_encrypt_nopadding(byte[] data, byte[] key)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 
         Cipher cryptor = CryptTools.genCrypter("AES", "AES/ECB/NoPadding", key, null);
 
         return cryptor.doFinal(data);
     }
 
-    public static byte[] aes_ecb_decrypt_nopadding(byte[] data, byte[] key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+    public static byte[] aes_ecb_decrypt_nopadding(byte[] data, byte[] key)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 
         Cipher decryptor = CryptTools.genDecrypter("AES", "AES/ECB/NoPadding", key, null);
 
         return decryptor.doFinal(data);
     }
 
-    public static byte[] aes_ecb_encrypt_pkcs7(byte[] data, byte[] key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+    public static byte[] aes_ecb_encrypt_pkcs7(byte[] data, byte[] key)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 
         Cipher cryptor = CryptTools.genCrypter("AES", "AES/ECB/PKCS5Padding", key, null);
 
         return cryptor.doFinal(data);
     }
 
-    public static byte[] aes_ecb_decrypt_pkcs7(byte[] data, byte[] key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+    public static byte[] aes_ecb_decrypt_pkcs7(byte[] data, byte[] key)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 
         Cipher decryptor = CryptTools.genDecrypter("AES", "AES/ECB/PKCS5Padding", key, null);
 
         return decryptor.doFinal(data);
     }
 
-    public static byte[] aes_ctr_encrypt_nopadding(byte[] data, byte[] key, byte[] iv) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+    public static byte[] aes_ctr_encrypt_nopadding(byte[] data, byte[] key, byte[] iv)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 
         Cipher cryptor = CryptTools.genCrypter("AES", "AES/CTR/NoPadding", key, iv);
 
         return cryptor.doFinal(data);
     }
 
-    public static byte[] aes_ctr_decrypt_nopadding(byte[] data, byte[] key, byte[] iv) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+    public static byte[] aes_ctr_decrypt_nopadding(byte[] data, byte[] key, byte[] iv)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 
         Cipher decryptor = CryptTools.genDecrypter("AES", "AES/CTR/NoPadding", key, iv);
 
         return decryptor.doFinal(data);
     }
 
-    public static int[] aes_cbc_encrypt_ia32(int[] data, int[] key, int[] iv) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+    public static int[] aes_cbc_encrypt_ia32(int[] data, int[] key, int[] iv)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 
         return bin2i32a(CryptTools.aes_cbc_encrypt_nopadding(i32a2bin(data), i32a2bin(key), i32a2bin(iv)));
     }
 
-    public static int[] aes_cbc_decrypt_ia32(int[] data, int[] key, int[] iv) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+    public static int[] aes_cbc_decrypt_ia32(int[] data, int[] key, int[] iv)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 
         return bin2i32a(CryptTools.aes_cbc_decrypt_nopadding(i32a2bin(data), i32a2bin(key), i32a2bin(iv)));
     }
 
-    public static byte[] rsaDecrypt(BigInteger enc_data, BigInteger p, BigInteger q, BigInteger d) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+    public static byte[] rsaDecrypt(BigInteger enc_data, BigInteger p, BigInteger q, BigInteger d)
+            throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException,
+            IllegalBlockSizeException, BadPaddingException {
 
         RSAPrivateKeySpec privateSpec = new RSAPrivateKeySpec(p.multiply(q), d);
 
@@ -236,8 +263,11 @@ public class CryptTools {
         return new_iv;
     }
 
-    public static String decryptMegaDownloaderLink(String link) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, Exception, IllegalBlockSizeException, BadPaddingException {
-        String[] keys = {"6B316F36416C2D316B7A3F217A30357958585858585858585858585858585858", "ED1F4C200B35139806B260563B3D3876F011B4750F3A1A4A5EFD0BBE67554B44"};
+    public static String decryptMegaDownloaderLink(String link)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException, Exception, IllegalBlockSizeException, BadPaddingException {
+        String[] keys = { "6B316F36416C2D316B7A3F217A30357958585858585858585858585858585858",
+                "ED1F4C200B35139806B260563B3D3876F011B4750F3A1A4A5EFD0BBE67554B44" };
         String iv = "79F10A01844A0B27FF5B2D4E0ED3163E";
 
         String enc_type, folder, dec_link;
@@ -260,7 +290,8 @@ public class CryptTools {
 
             decrypter = CryptTools.genDecrypter("AES", "AES/CBC/NoPadding", hex2bin(the_key), hex2bin(iv));
 
-            byte[] decrypted_data = decrypter.doFinal(UrlBASE642Bin(findFirstRegex("mega://f?enc[0-9]*\\?([\\da-zA-Z_,-]*)", link, 1)));
+            byte[] decrypted_data = decrypter
+                    .doFinal(UrlBASE642Bin(findFirstRegex("mega://f?enc[0-9]*\\?([\\da-zA-Z_,-]*)", link, 1)));
 
             dec_link = new String(decrypted_data, "UTF-8").trim();
 
@@ -300,7 +331,8 @@ public class CryptTools {
 
                 if (compression) {
 
-                    try (InputStream is = new GZIPInputStream(new ByteArrayInputStream(elc_byte)); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+                    try (InputStream is = new GZIPInputStream(new ByteArrayInputStream(elc_byte));
+                            ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 
                         byte[] buffer = new byte[MainPanel.DEFAULT_BYTE_BUFFER_SIZE];
 
@@ -316,32 +348,43 @@ public class CryptTools {
                     }
                 }
 
-                int bin_links_length = ByteBuffer.wrap(recReverseArray(Arrays.copyOfRange(elc_byte, 0, 4), 0, 3)).getInt();
+                int bin_links_length = ByteBuffer.wrap(recReverseArray(Arrays.copyOfRange(elc_byte, 0, 4), 0, 3))
+                        .getInt();
 
                 byte[] bin_links = Arrays.copyOfRange(elc_byte, 4, 4 + bin_links_length);
 
-                short url_bin_length = ByteBuffer.wrap(recReverseArray(Arrays.copyOfRange(elc_byte, 4 + bin_links_length, 4 + bin_links_length + 2), 0, 1)).getShort();
+                short url_bin_length = ByteBuffer
+                        .wrap(recReverseArray(
+                                Arrays.copyOfRange(elc_byte, 4 + bin_links_length, 4 + bin_links_length + 2), 0, 1))
+                        .getShort();
 
-                byte[] url_bin = Arrays.copyOfRange(elc_byte, 4 + bin_links_length + 2, 4 + bin_links_length + 2 + url_bin_length);
+                byte[] url_bin = Arrays.copyOfRange(elc_byte, 4 + bin_links_length + 2,
+                        4 + bin_links_length + 2 + url_bin_length);
 
                 if (!new String(url_bin, "UTF-8").contains("http")) {
 
                     throw new Exception("BAD ELC HOST URL!");
                 }
 
-                short pass_bin_length = ByteBuffer.wrap(recReverseArray(Arrays.copyOfRange(elc_byte, 4 + bin_links_length + 2 + url_bin_length, 4 + bin_links_length + 2 + url_bin_length + 2), 0, 1)).getShort();
+                short pass_bin_length = ByteBuffer
+                        .wrap(recReverseArray(Arrays.copyOfRange(elc_byte, 4 + bin_links_length + 2 + url_bin_length,
+                                4 + bin_links_length + 2 + url_bin_length + 2), 0, 1))
+                        .getShort();
 
-                byte[] pass_bin = Arrays.copyOfRange(elc_byte, 4 + bin_links_length + 2 + url_bin_length + 2, 4 + bin_links_length + 2 + url_bin_length + 2 + pass_bin_length);
+                byte[] pass_bin = Arrays.copyOfRange(elc_byte, 4 + bin_links_length + 2 + url_bin_length + 2,
+                        4 + bin_links_length + 2 + url_bin_length + 2 + pass_bin_length);
 
                 URL url = new URL(new String(url_bin, "UTF-8").trim());
 
                 if (MainPanel.isUse_proxy()) {
 
-                    con = (HttpURLConnection) url.openConnection(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(MainPanel.getProxy_host(), MainPanel.getProxy_port())));
+                    con = (HttpURLConnection) url.openConnection(new Proxy(Proxy.Type.HTTP,
+                            new InetSocketAddress(MainPanel.getProxy_host(), MainPanel.getProxy_port())));
 
                     if (MainPanel.getProxy_user() != null && !"".equals(MainPanel.getProxy_user())) {
 
-                        con.setRequestProperty("Proxy-Authorization", "Basic " + MiscTools.Bin2BASE64((MainPanel.getProxy_user() + ":" + MainPanel.getProxy_pass()).getBytes("UTF-8")));
+                        con.setRequestProperty("Proxy-Authorization", "Basic " + MiscTools.Bin2BASE64(
+                                (MainPanel.getProxy_user() + ":" + MainPanel.getProxy_pass()).getBytes("UTF-8")));
                     }
                 } else {
 
@@ -370,7 +413,8 @@ public class CryptTools {
 
                         if (main_panel.getMaster_pass() == null) {
 
-                            GetMasterPasswordDialog dialog = new GetMasterPasswordDialog(main_panel.getView(), true, main_panel.getMaster_pass_hash(), main_panel.getMaster_pass_salt(), main_panel);
+                            GetMasterPasswordDialog dialog = new GetMasterPasswordDialog(main_panel.getView(), true,
+                                    main_panel.getMaster_pass_hash(), main_panel.getMaster_pass_salt(), main_panel);
 
                             dialog.setLocationRelativeTo(main_panel.getView());
 
@@ -386,9 +430,15 @@ public class CryptTools {
 
                                 dialog.dispose();
 
-                                user = new String(CryptTools.aes_cbc_decrypt_pkcs7(BASE642Bin(elc_account_data.get("user")), main_panel.getMaster_pass(), CryptTools.AES_ZERO_IV), "UTF-8");
+                                user = new String(
+                                        CryptTools.aes_cbc_decrypt_pkcs7(BASE642Bin(elc_account_data.get("user")),
+                                                main_panel.getMaster_pass(), CryptTools.AES_ZERO_IV),
+                                        "UTF-8");
 
-                                api_key = new String(CryptTools.aes_cbc_decrypt_pkcs7(BASE642Bin(elc_account_data.get("apikey")), main_panel.getMaster_pass(), CryptTools.AES_ZERO_IV), "UTF-8");
+                                api_key = new String(
+                                        CryptTools.aes_cbc_decrypt_pkcs7(BASE642Bin(elc_account_data.get("apikey")),
+                                                main_panel.getMaster_pass(), CryptTools.AES_ZERO_IV),
+                                        "UTF-8");
 
                                 if (!remember_master_pass) {
 
@@ -404,9 +454,13 @@ public class CryptTools {
 
                         } else {
 
-                            user = new String(CryptTools.aes_cbc_decrypt_pkcs7(BASE642Bin(elc_account_data.get("user")), main_panel.getMaster_pass(), CryptTools.AES_ZERO_IV), "UTF-8");
+                            user = new String(CryptTools.aes_cbc_decrypt_pkcs7(BASE642Bin(elc_account_data.get("user")),
+                                    main_panel.getMaster_pass(), CryptTools.AES_ZERO_IV), "UTF-8");
 
-                            api_key = new String(CryptTools.aes_cbc_decrypt_pkcs7(BASE642Bin(elc_account_data.get("apikey")), main_panel.getMaster_pass(), CryptTools.AES_ZERO_IV), "UTF-8");
+                            api_key = new String(
+                                    CryptTools.aes_cbc_decrypt_pkcs7(BASE642Bin(elc_account_data.get("apikey")),
+                                            main_panel.getMaster_pass(), CryptTools.AES_ZERO_IV),
+                                    "UTF-8");
 
                         }
 
@@ -422,7 +476,8 @@ public class CryptTools {
                     throw new Exception("NO valid ELC account available!");
                 }
 
-                String postdata = "OPERATION_TYPE=D&DATA=" + new String(pass_bin, "UTF-8") + "&USER=" + user + "&APIKEY=" + api_key;
+                String postdata = "OPERATION_TYPE=D&DATA=" + new String(pass_bin, "UTF-8") + "&USER=" + user
+                        + "&APIKEY=" + api_key;
 
                 con.getOutputStream().write(postdata.getBytes("UTF-8"));
 
@@ -469,14 +524,16 @@ public class CryptTools {
                         }
 
                     } else {
-                        throw new Exception(url.getAuthority() + " ELC SERVER ERROR " + new String(out.toByteArray(), "UTF-8"));
+                        throw new Exception(
+                                url.getAuthority() + " ELC SERVER ERROR " + new String(out.toByteArray(), "UTF-8"));
                     }
 
                 }
 
             } catch (Exception ex) {
                 Logger.getLogger(CryptTools.class.getName()).log(Level.SEVERE, ex.getMessage());
-                JOptionPane.showMessageDialog(main_panel.getView(), ex.getMessage(), "ELC ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(main_panel.getView(), ex.getMessage(), "ELC ERROR",
+                        JOptionPane.ERROR_MESSAGE);
             } finally {
                 if (con != null) {
                     con.disconnect();
@@ -510,11 +567,13 @@ public class CryptTools {
 
             if (MainPanel.isUse_proxy()) {
 
-                con = (HttpURLConnection) url.openConnection(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(MainPanel.getProxy_host(), MainPanel.getProxy_port())));
+                con = (HttpURLConnection) url.openConnection(new Proxy(Proxy.Type.HTTP,
+                        new InetSocketAddress(MainPanel.getProxy_host(), MainPanel.getProxy_port())));
 
                 if (MainPanel.getProxy_user() != null && !"".equals(MainPanel.getProxy_user())) {
 
-                    con.setRequestProperty("Proxy-Authorization", "Basic " + MiscTools.Bin2BASE64((MainPanel.getProxy_user() + ":" + MainPanel.getProxy_pass()).getBytes("UTF-8")));
+                    con.setRequestProperty("Proxy-Authorization", "Basic " + MiscTools.Bin2BASE64(
+                            (MainPanel.getProxy_user() + ":" + MainPanel.getProxy_pass()).getBytes("UTF-8")));
                 }
             } else {
 
@@ -527,7 +586,8 @@ public class CryptTools {
 
             con.setUseCaches(false);
 
-            con.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; U; Linux amd64; rv:44.0) Gecko/20100101 Firefox/44.0");
+            con.setRequestProperty("User-Agent",
+                    "Mozilla/5.0 (X11; U; Linux amd64; rv:44.0) Gecko/20100101 Firefox/44.0");
 
             con.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 
@@ -559,11 +619,15 @@ public class CryptTools {
                 enc_dlc_key = findFirstRegex("< *rc *>(.+?)< */ *rc *>", new String(out.toByteArray(), "UTF-8"), 1);
             }
 
-            String dec_dlc_key = new String(CryptTools.aes_ecb_decrypt_nopadding(BASE642Bin(enc_dlc_key), hex2bin(dlc_master_key)), "UTF-8").trim();
+            String dec_dlc_key = new String(
+                    CryptTools.aes_ecb_decrypt_nopadding(BASE642Bin(enc_dlc_key), hex2bin(dlc_master_key)), "UTF-8")
+                            .trim();
 
-            String dec_dlc_data = new String(CryptTools.aes_cbc_decrypt_nopadding(BASE642Bin(enc_dlc_data), BASE642Bin(dec_dlc_key), BASE642Bin(dec_dlc_key)), "UTF-8").trim();
+            String dec_dlc_data = new String(CryptTools.aes_cbc_decrypt_nopadding(BASE642Bin(enc_dlc_data),
+                    BASE642Bin(dec_dlc_key), BASE642Bin(dec_dlc_key)), "UTF-8").trim();
 
-            String dec_dlc_data_file = findFirstRegex("< *file *>(.+?)< */ *file *>", new String(BASE642Bin(dec_dlc_data), "UTF-8"), 1);
+            String dec_dlc_data_file = findFirstRegex("< *file *>(.+?)< */ *file *>",
+                    new String(BASE642Bin(dec_dlc_data), "UTF-8"), 1);
 
             ArrayList<String> urls = findAllRegex("< *url *>(.+?)< */ *url *>", dec_dlc_data_file, 1);
 
@@ -576,7 +640,8 @@ public class CryptTools {
 
             Logger.getLogger(CryptTools.class.getName()).log(Level.SEVERE, ex.getMessage());
 
-            JOptionPane.showMessageDialog(main_panel.getView(), ex.getMessage(), "DLC ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(main_panel.getView(), ex.getMessage(), "DLC ERROR",
+                    JOptionPane.ERROR_MESSAGE);
         } finally {
             if (con != null) {
                 con.disconnect();
@@ -586,13 +651,15 @@ public class CryptTools {
         return links;
     }
 
-    public static String MEGAUserHash(byte[] str, int[] aeskey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, Exception {
+    public static String MEGAUserHash(byte[] str, int[] aeskey)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, Exception {
 
         int[] s32 = bin2i32a(str);
 
-        int[] h32 = {0, 0, 0, 0};
+        int[] h32 = { 0, 0, 0, 0 };
 
-        int[] iv = {0, 0, 0, 0};
+        int[] iv = { 0, 0, 0, 0 };
 
         for (int i = 0; i < s32.length; i++) {
 
@@ -604,22 +671,23 @@ public class CryptTools {
             h32 = CryptTools.aes_cbc_encrypt_ia32(h32, aeskey, iv);
         }
 
-        int[] res = {h32[0], h32[2]};
+        int[] res = { h32[0], h32[2] };
 
         return Bin2UrlBASE64(i32a2bin(res));
     }
 
-    public static int[] MEGAPrepareMasterKey(int[] key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+    public static int[] MEGAPrepareMasterKey(int[] key) throws NoSuchAlgorithmException, NoSuchPaddingException,
+            InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 
-        int[] pkey = {0x93C467E3, 0x7DB0C7A4, 0xD1BE3F81, 0x0152CB56};
+        int[] pkey = { 0x93C467E3, 0x7DB0C7A4, 0xD1BE3F81, 0x0152CB56 };
 
-        int[] iv = {0, 0, 0, 0};
+        int[] iv = { 0, 0, 0, 0 };
 
         for (int r = 0; r < 0x10000; r++) {
 
             for (int j = 0; j < key.length; j += 4) {
 
-                int[] k = {0, 0, 0, 0};
+                int[] k = { 0, 0, 0, 0 };
 
                 for (int i = 0; i < 4; i++) {
 
@@ -636,7 +704,8 @@ public class CryptTools {
         return pkey;
     }
 
-    public static byte[] PBKDF2HMACSHA256(String password, byte[] salt, int iterations, int output_length) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public static byte[] PBKDF2HMACSHA256(String password, byte[] salt, int iterations, int output_length)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
 
         SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
 
@@ -645,7 +714,8 @@ public class CryptTools {
         return f.generateSecret(ks).getEncoded();
     }
 
-    public static byte[] PBKDF2HMACSHA512(String password, byte[] salt, int iterations, int output_length) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public static byte[] PBKDF2HMACSHA512(String password, byte[] salt, int iterations, int output_length)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
 
         SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
 

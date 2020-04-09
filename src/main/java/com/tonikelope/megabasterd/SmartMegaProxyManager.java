@@ -34,7 +34,8 @@ public final class SmartMegaProxyManager {
     private final MainPanel _main_panel;
 
     public SmartMegaProxyManager(String proxy_list_url, MainPanel main_panel) {
-        _proxy_list_url = (proxy_list_url != null && !"".equals(proxy_list_url)) ? proxy_list_url : DEFAULT_SMART_PROXY_URL;
+        _proxy_list_url = (proxy_list_url != null && !"".equals(proxy_list_url)) ? proxy_list_url
+                : DEFAULT_SMART_PROXY_URL;
         _proxy_list = new LinkedHashMap<>();
         _main_panel = main_panel;
         refreshProxyList();
@@ -57,12 +58,15 @@ public final class SmartMegaProxyManager {
 
                 if (_proxy_list.get(k)[0] < current_time && (excluded == null || !excluded.contains(k))) {
 
-                    return new String[]{k, _proxy_list.get(k)[1] == -1L ? "http" : "socks"};
+                    return new String[] { k, _proxy_list.get(k)[1] == -1L ? "http" : "socks" };
                 }
             }
         }
 
-        LOG.log(Level.WARNING, "{0} Smart Proxy Manager: NO PROXYS AVAILABLE!! (Refreshing in " + String.valueOf(PROXY_AUTO_REFRESH_SLEEP_TIME) + " secs...)", new Object[]{Thread.currentThread().getName()});
+        LOG.log(Level.WARNING,
+                "{0} Smart Proxy Manager: NO PROXYS AVAILABLE!! (Refreshing in "
+                        + String.valueOf(PROXY_AUTO_REFRESH_SLEEP_TIME) + " secs...)",
+                new Object[] { Thread.currentThread().getName() });
 
         try {
             Thread.sleep(PROXY_AUTO_REFRESH_SLEEP_TIME * 1000);
@@ -85,7 +89,8 @@ public final class SmartMegaProxyManager {
 
             _proxy_list.put(proxy, proxy_data);
 
-            LOG.log(Level.WARNING, "{0} Smart Proxy Manager: BLOCKING PROXY -> {1} ({2} secs)", new Object[]{Thread.currentThread().getName(), proxy, PROXY_BLOCK_TIME});
+            LOG.log(Level.WARNING, "{0} Smart Proxy Manager: BLOCKING PROXY -> {1} ({2} secs)",
+                    new Object[] { Thread.currentThread().getName(), proxy, PROXY_BLOCK_TIME });
         }
     }
 
@@ -127,13 +132,13 @@ public final class SmartMegaProxyManager {
 
                             custom_clean_list_auth.put(proxy_parts[0], proxy_parts[1]);
 
-                            Long[] proxy_data = new Long[]{current_time, socks ? 1L : -1L};
+                            Long[] proxy_data = new Long[] { current_time, socks ? 1L : -1L };
 
                             custom_clean_list.put(proxy_parts[0], proxy_data);
 
                         } else if (proxy.trim().matches(".+?:[0-9]{1,5}")) {
 
-                            Long[] proxy_data = new Long[]{current_time, socks ? 1L : -1L};
+                            Long[] proxy_data = new Long[] { current_time, socks ? 1L : -1L };
 
                             custom_clean_list.put(proxy, proxy_data);
                         }
@@ -166,7 +171,8 @@ public final class SmartMegaProxyManager {
 
                 con.setRequestProperty("User-Agent", MainPanel.DEFAULT_USER_AGENT);
 
-                try (InputStream is = con.getInputStream(); ByteArrayOutputStream byte_res = new ByteArrayOutputStream()) {
+                try (InputStream is = con.getInputStream();
+                        ByteArrayOutputStream byte_res = new ByteArrayOutputStream()) {
 
                     byte[] buffer = new byte[MainPanel.DEFAULT_BYTE_BUFFER_SIZE];
 
@@ -206,27 +212,31 @@ public final class SmartMegaProxyManager {
 
                             PROXY_LIST_AUTH.put(proxy_parts[0], proxy_parts[1]);
 
-                            Long[] proxy_data = new Long[]{current_time, socks ? 1L : -1L};
+                            Long[] proxy_data = new Long[] { current_time, socks ? 1L : -1L };
 
                             _proxy_list.put(proxy_parts[0], proxy_data);
 
                         } else if (proxy.trim().matches(".+?:[0-9]{1,5}")) {
-                            Long[] proxy_data = new Long[]{current_time, socks ? 1L : -1L};
+                            Long[] proxy_data = new Long[] { current_time, socks ? 1L : -1L };
                             _proxy_list.put(proxy, proxy_data);
                         }
 
                     }
                 }
 
-                _main_panel.getView().updateSmartProxyStatus("SmartProxy: ON (" + String.valueOf(getProxyCount()) + ")");
+                _main_panel.getView()
+                        .updateSmartProxyStatus("SmartProxy: ON (" + String.valueOf(getProxyCount()) + ")");
 
-                LOG.log(Level.INFO, "{0} Smart Proxy Manager: proxy list refreshed ({1})", new Object[]{Thread.currentThread().getName(), _proxy_list.size()});
+                LOG.log(Level.INFO, "{0} Smart Proxy Manager: proxy list refreshed ({1})",
+                        new Object[] { Thread.currentThread().getName(), _proxy_list.size() });
 
             } else if (!custom_clean_list.isEmpty()) {
 
-                _main_panel.getView().updateSmartProxyStatus("SmartProxy: ON (" + String.valueOf(getProxyCount()) + ")*");
+                _main_panel.getView()
+                        .updateSmartProxyStatus("SmartProxy: ON (" + String.valueOf(getProxyCount()) + ")*");
 
-                LOG.log(Level.INFO, "{0} Smart Proxy Manager: proxy list refreshed ({1})", new Object[]{Thread.currentThread().getName(), _proxy_list.size()});
+                LOG.log(Level.INFO, "{0} Smart Proxy Manager: proxy list refreshed ({1})",
+                        new Object[] { Thread.currentThread().getName(), _proxy_list.size() });
             }
 
         } catch (MalformedURLException ex) {

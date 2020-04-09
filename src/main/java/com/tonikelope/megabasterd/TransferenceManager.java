@@ -55,7 +55,9 @@ abstract public class TransferenceManager implements Runnable, SecureSingleThrea
     protected final Object _transference_queue_sort_lock;
     private volatile Boolean _sort_wait_start_queue;
 
-    public TransferenceManager(MainPanel main_panel, int max_running_trans, javax.swing.JLabel status, javax.swing.JPanel scroll_panel, javax.swing.JButton close_all_button, javax.swing.JButton pause_all_button, javax.swing.MenuElement clean_all_menu) {
+    public TransferenceManager(MainPanel main_panel, int max_running_trans, javax.swing.JLabel status,
+            javax.swing.JPanel scroll_panel, javax.swing.JButton close_all_button, javax.swing.JButton pause_all_button,
+            javax.swing.MenuElement clean_all_menu) {
         _notified = false;
         _paused_all = false;
         _frozen = false;
@@ -107,7 +109,8 @@ abstract public class TransferenceManager implements Runnable, SecureSingleThrea
     }
 
     public boolean no_transferences() {
-        return getTransference_preprocess_queue().isEmpty() && getTransference_provision_queue().isEmpty() && getTransference_waitstart_queue().isEmpty() && getTransference_running_list().isEmpty();
+        return getTransference_preprocess_queue().isEmpty() && getTransference_provision_queue().isEmpty()
+                && getTransference_waitstart_queue().isEmpty() && getTransference_running_list().isEmpty();
     }
 
     public boolean isPaused_all() {
@@ -570,7 +573,8 @@ abstract public class TransferenceManager implements Runnable, SecureSingleThrea
 
             ArrayList<Transference> trans_list = new ArrayList(queue);
 
-            trans_list.sort((Transference o1, Transference o2) -> MiscTools.naturalCompare(o1.getFile_name(), o2.getFile_name(), true));
+            trans_list.sort((Transference o1, Transference o2) -> MiscTools.naturalCompare(o1.getFile_name(),
+                    o2.getFile_name(), true));
 
             queue.clear();
 
@@ -603,7 +607,8 @@ abstract public class TransferenceManager implements Runnable, SecureSingleThrea
 
             _pause_all_button.setVisible(!getTransference_running_list().isEmpty());
 
-            _clean_all_menu.getComponent().setEnabled(!_transference_preprocess_queue.isEmpty() || !_transference_provision_queue.isEmpty() || !getTransference_waitstart_queue().isEmpty());
+            _clean_all_menu.getComponent().setEnabled(!_transference_preprocess_queue.isEmpty()
+                    || !_transference_provision_queue.isEmpty() || !getTransference_waitstart_queue().isEmpty());
 
             if (!_transference_finished_queue.isEmpty() && _isOKFinishedInQueue()) {
 
@@ -618,7 +623,8 @@ abstract public class TransferenceManager implements Runnable, SecureSingleThrea
 
             _status.setText(_genStatus());
 
-            _main_panel.getView().getUnfreeze_transferences_button().setVisible(_main_panel.getDownload_manager().isFrozen() || _main_panel.getUpload_manager().isFrozen());
+            _main_panel.getView().getUnfreeze_transferences_button().setVisible(
+                    _main_panel.getDownload_manager().isFrozen() || _main_panel.getUpload_manager().isFrozen());
 
             _main_panel.getView().revalidate();
 
@@ -644,10 +650,12 @@ abstract public class TransferenceManager implements Runnable, SecureSingleThrea
 
             _tray_icon_finish = true;
 
-            _main_panel.getTrayicon().displayMessage("MegaBasterd says:", "All your transferences have finished", TrayIcon.MessageType.INFO);
+            _main_panel.getTrayicon().displayMessage("MegaBasterd says:", "All your transferences have finished",
+                    TrayIcon.MessageType.INFO);
         }
 
-        return (pre + prov + rem + wait + run + finish > 0) ? "Pre: " + pre + " / Pro: " + prov + " / Wait: " + wait + " / Run: " + run + " / Finish: " + finish + " / Rem: " + rem : "";
+        return (pre + prov + rem + wait + run + finish > 0) ? "Pre: " + pre + " / Pro: " + prov + " / Wait: " + wait
+                + " / Run: " + run + " / Finish: " + finish + " / Rem: " + rem : "";
     }
 
     private boolean _isOKFinishedInQueue() {
@@ -726,7 +734,8 @@ abstract public class TransferenceManager implements Runnable, SecureSingleThrea
                 });
             }
 
-            if (!isRemoving_transferences() && !isProvisioning_transferences() && !getTransference_provision_queue().isEmpty()) {
+            if (!isRemoving_transferences() && !isProvisioning_transferences()
+                    && !getTransference_provision_queue().isEmpty()) {
 
                 setProvisioning_transferences(true);
 
@@ -762,7 +771,8 @@ abstract public class TransferenceManager implements Runnable, SecureSingleThrea
                             sortTransferenceQueue(getTransference_waitstart_aux_queue());
                         }
 
-                        if (getTransference_waitstart_aux_queue().peek() != null && getTransference_waitstart_aux_queue().peek().isPriority()) {
+                        if (getTransference_waitstart_aux_queue().peek() != null
+                                && getTransference_waitstart_aux_queue().peek().isPriority()) {
 
                             ArrayList<Transference> trans_list = new ArrayList(getTransference_waitstart_queue());
 
@@ -804,7 +814,9 @@ abstract public class TransferenceManager implements Runnable, SecureSingleThrea
 
             }
 
-            if (!_frozen && !_main_panel.isExit() && !_paused_all && !isRemoving_transferences() && !isStarting_transferences() && !getTransference_waitstart_queue().isEmpty() && getTransference_running_list().size() < _max_running_trans) {
+            if (!_frozen && !_main_panel.isExit() && !_paused_all && !isRemoving_transferences()
+                    && !isStarting_transferences() && !getTransference_waitstart_queue().isEmpty()
+                    && getTransference_running_list().size() < _max_running_trans) {
 
                 setStarting_transferences(true);
 
@@ -812,7 +824,9 @@ abstract public class TransferenceManager implements Runnable, SecureSingleThrea
 
                     Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
 
-                    while (!_frozen && !_main_panel.isExit() && !_paused_all && !getTransference_waitstart_queue().isEmpty() && getTransference_running_list().size() < _max_running_trans) {
+                    while (!_frozen && !_main_panel.isExit() && !_paused_all
+                            && !getTransference_waitstart_queue().isEmpty()
+                            && getTransference_running_list().size() < _max_running_trans) {
 
                         Transference transference = getTransference_waitstart_queue().peek();
 

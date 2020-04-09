@@ -99,7 +99,8 @@ public class KissVideoStreamServer implements HttpHandler, SecureSingleThreadNot
 
     public void start(int port, String context) throws IOException {
 
-        _main_panel.getView().updateKissStreamServerStatus(LabelTranslatorSingleton.getInstance().translate("Streaming server: ON (port ") + STREAMER_PORT + ")");
+        _main_panel.getView().updateKissStreamServerStatus(
+                LabelTranslatorSingleton.getInstance().translate("Streaming server: ON (port ") + STREAMER_PORT + ")");
 
         HttpServer httpserver = HttpServer.create(new InetSocketAddress(InetAddress.getLoopbackAddress(), port), 0);
 
@@ -127,11 +128,13 @@ public class KissVideoStreamServer implements HttpHandler, SecureSingleThreadNot
 
         if (getWorking_threads().size() > 0) {
 
-            status = LabelTranslatorSingleton.getInstance().translate("Streaming server: ON (port ") + STREAMER_PORT + " [" + getWorking_threads().size() + "])";
+            status = LabelTranslatorSingleton.getInstance().translate("Streaming server: ON (port ") + STREAMER_PORT
+                    + " [" + getWorking_threads().size() + "])";
 
         } else {
 
-            status = LabelTranslatorSingleton.getInstance().translate("Streaming server: ON (port ") + STREAMER_PORT + ")";
+            status = LabelTranslatorSingleton.getInstance().translate("Streaming server: ON (port ") + STREAMER_PORT
+                    + ")";
         }
 
         _main_panel.getView().updateKissStreamServerStatus(status);
@@ -158,7 +161,14 @@ public class KissVideoStreamServer implements HttpHandler, SecureSingleThreadNot
 
                 } else {
 
-                    file_info = MegaCrypterAPI.getMegaFileMetadata(link, panel, getMain_panel().getMega_proxy_server() != null ? (getMain_panel().getMega_proxy_server().getPort() + ":" + Bin2BASE64(("megacrypter:" + getMain_panel().getMega_proxy_server().getPassword()).getBytes("UTF-8"))) : null);
+                    file_info = MegaCrypterAPI
+                            .getMegaFileMetadata(link, panel,
+                                    getMain_panel().getMega_proxy_server() != null
+                                            ? (getMain_panel().getMega_proxy_server().getPort() + ":"
+                                                    + Bin2BASE64(("megacrypter:"
+                                                            + getMain_panel().getMega_proxy_server().getPassword())
+                                                                    .getBytes("UTF-8")))
+                                            : null);
 
                 }
 
@@ -182,7 +192,8 @@ public class KissVideoStreamServer implements HttpHandler, SecureSingleThreadNot
         return file_info;
     }
 
-    public String getMegaFileDownloadUrl(String link, String pass_hash, String noexpire_token, String mega_account) throws Exception {
+    public String getMegaFileDownloadUrl(String link, String pass_hash, String noexpire_token, String mega_account)
+            throws Exception {
 
         String dl_url = null;
         int conta_error = 0;
@@ -205,7 +216,13 @@ public class KissVideoStreamServer implements HttpHandler, SecureSingleThreadNot
                     dl_url = ma.getMegaFileDownloadUrl(link);
 
                 } else {
-                    dl_url = MegaCrypterAPI.getMegaFileDownloadUrl(link, pass_hash, noexpire_token, ma.getSid(), getMain_panel().getMega_proxy_server() != null ? (getMain_panel().getMega_proxy_server().getPort() + ":" + Bin2BASE64(("megacrypter:" + getMain_panel().getMega_proxy_server().getPassword()).getBytes("UTF-8")) + ":" + MiscTools.getMyPublicIP()) : null);
+                    dl_url = MegaCrypterAPI.getMegaFileDownloadUrl(link, pass_hash, noexpire_token, ma.getSid(),
+                            getMain_panel().getMega_proxy_server() != null
+                                    ? (getMain_panel().getMega_proxy_server().getPort() + ":" + Bin2BASE64(
+                                            ("megacrypter:" + getMain_panel().getMega_proxy_server().getPassword())
+                                                    .getBytes("UTF-8"))
+                                            + ":" + MiscTools.getMyPublicIP())
+                                    : null);
                 }
 
             } catch (APIException ex) {
@@ -278,7 +295,8 @@ public class KissVideoStreamServer implements HttpHandler, SecureSingleThreadNot
 
             String link;
 
-            String[] url_parts = new String(UrlBASE642Bin(url_path.substring(url_path.indexOf("/video/") + 7)), "UTF-8").split("\\|");
+            String[] url_parts = new String(UrlBASE642Bin(url_path.substring(url_path.indexOf("/video/") + 7)), "UTF-8")
+                    .split("\\|");
 
             mega_account = url_parts[0];
 
@@ -288,7 +306,7 @@ public class KissVideoStreamServer implements HttpHandler, SecureSingleThreadNot
 
             link = url_parts[1];
 
-            LOG.log(Level.INFO, "{0} {1} {2}", new Object[]{Thread.currentThread().getName(), link, mega_account});
+            LOG.log(Level.INFO, "{0} {1} {2}", new Object[] { Thread.currentThread().getName(), link, mega_account });
 
             HashMap cache_info, file_info;
 
@@ -335,7 +353,8 @@ public class KissVideoStreamServer implements HttpHandler, SecureSingleThreadNot
 
                 resheaders.add("transferMode.dlna.org", "Streaming");
 
-                resheaders.add("contentFeatures.dlna.org", "DLNA.ORG_OP=01;DLNA.ORG_CI=0;DLNA.ORG_FLAGS=01700000000000000000000000000000");
+                resheaders.add("contentFeatures.dlna.org",
+                        "DLNA.ORG_OP=01;DLNA.ORG_CI=0;DLNA.ORG_FLAGS=01700000000000000000000000000000");
 
                 resheaders.add("Content-Type", getCtype().getMIME(file_ext));
 
@@ -351,7 +370,8 @@ public class KissVideoStreamServer implements HttpHandler, SecureSingleThreadNot
 
                 resheaders.add("transferMode.dlna.org", "Streaming");
 
-                resheaders.add("contentFeatures.dlna.org", "DLNA.ORG_OP=01;DLNA.ORG_CI=0;DLNA.ORG_FLAGS=01700000000000000000000000000000");
+                resheaders.add("contentFeatures.dlna.org",
+                        "DLNA.ORG_OP=01;DLNA.ORG_CI=0;DLNA.ORG_FLAGS=01700000000000000000000000000000");
 
                 resheaders.add("Content-Type", getCtype().getMIME(file_ext));
 
@@ -419,17 +439,20 @@ public class KissVideoStreamServer implements HttpHandler, SecureSingleThreadNot
                         clength = file_size - ranges[0];
                     }
 
-                    resheaders.add("Content-Range", "bytes " + ranges[0] + "-" + (ranges[1] >= 0 ? ranges[1] : (file_size - 1)) + "/" + file_size);
+                    resheaders.add("Content-Range", "bytes " + ranges[0] + "-"
+                            + (ranges[1] >= 0 ? ranges[1] : (file_size - 1)) + "/" + file_size);
 
                     xchg.sendResponseHeaders(206, clength);
 
-                    chunkwriter = new StreamChunkManager(this, link, file_info, mega_account, pipeout, temp_url, ranges[0] - sync_bytes, ranges[1] >= 0 ? ranges[1] : file_size - 1);
+                    chunkwriter = new StreamChunkManager(this, link, file_info, mega_account, pipeout, temp_url,
+                            ranges[0] - sync_bytes, ranges[1] >= 0 ? ranges[1] : file_size - 1);
 
                 } else {
 
                     xchg.sendResponseHeaders(200, file_size);
 
-                    chunkwriter = new StreamChunkManager(this, link, file_info, mega_account, pipeout, temp_url, 0, file_size - 1);
+                    chunkwriter = new StreamChunkManager(this, link, file_info, mega_account, pipeout, temp_url, 0,
+                            file_size - 1);
                 }
 
                 THREAD_POOL.execute(chunkwriter);
@@ -447,7 +470,11 @@ public class KissVideoStreamServer implements HttpHandler, SecureSingleThreadNot
 
                 byte[] iv = CryptTools.initMEGALinkKeyIV(file_key);
 
-                cis = new CipherInputStream(is, CryptTools.genDecrypter("AES", "AES/CTR/NoPadding", CryptTools.initMEGALinkKey(file_key), (header_range != null && (ranges[0] - sync_bytes) > 0) ? CryptTools.forwardMEGALinkKeyIV(iv, ranges[0] - sync_bytes) : iv));
+                cis = new CipherInputStream(is,
+                        CryptTools.genDecrypter("AES", "AES/CTR/NoPadding", CryptTools.initMEGALinkKey(file_key),
+                                (header_range != null && (ranges[0] - sync_bytes) > 0)
+                                        ? CryptTools.forwardMEGALinkKeyIV(iv, ranges[0] - sync_bytes)
+                                        : iv));
 
                 os = xchg.getResponseBody();
 

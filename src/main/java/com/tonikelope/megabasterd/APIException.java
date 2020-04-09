@@ -6,6 +6,7 @@ package com.tonikelope.megabasterd;
  */
 public abstract class APIException extends Exception {
 
+    private static final long serialVersionUID = 1L;
     protected Integer _code;
 
     public APIException(int code) {

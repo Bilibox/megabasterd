@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JPopupMenu;
@@ -17,8 +16,6 @@ import javax.swing.text.JTextComponent;
  * @author tonikelope
  */
 public class ContextMenuMouseListener extends MouseAdapter {
-
-    private static final Logger LOG = Logger.getLogger(ContextMenuMouseListener.class.getName());
 
     private final JPopupMenu _popup;
     private final Action _cutAction;
@@ -35,6 +32,8 @@ public class ContextMenuMouseListener extends MouseAdapter {
         _popup = new JPopupMenu();
         _undoAction = new AbstractAction("Undo") {
 
+            private static final long serialVersionUID = 1L;
+
             @Override
             public void actionPerformed(ActionEvent ae) {
                 _textComponent.setText("");
@@ -46,6 +45,8 @@ public class ContextMenuMouseListener extends MouseAdapter {
         _popup.add(_undoAction);
         _popup.addSeparator();
         _cutAction = new AbstractAction("Cut") {
+
+            private static final long serialVersionUID = 1L;
 
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -59,6 +60,8 @@ public class ContextMenuMouseListener extends MouseAdapter {
 
         _copyAction = new AbstractAction("Copy") {
 
+            private static final long serialVersionUID = 1L;
+
             @Override
             public void actionPerformed(ActionEvent ae) {
                 _lastActionSelected = _Actions.COPY;
@@ -69,6 +72,8 @@ public class ContextMenuMouseListener extends MouseAdapter {
         _popup.add(_copyAction);
 
         _pasteAction = new AbstractAction("Paste") {
+
+            private static final long serialVersionUID = 1L;
 
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -83,6 +88,8 @@ public class ContextMenuMouseListener extends MouseAdapter {
 
         _selectAllAction = new AbstractAction("Select All") {
 
+            private static final long serialVersionUID = 1L;
+
             @Override
             public void actionPerformed(ActionEvent ae) {
                 _lastActionSelected = _Actions.SELECT_ALL;
@@ -95,7 +102,7 @@ public class ContextMenuMouseListener extends MouseAdapter {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (e.getModifiers() == InputEvent.BUTTON3_MASK) {
+        if (e.getModifiersEx() == InputEvent.BUTTON3_DOWN_MASK) {
             if (!(e.getSource() instanceof JTextComponent)) {
 
                 return;
@@ -109,9 +116,11 @@ public class ContextMenuMouseListener extends MouseAdapter {
             boolean nonempty = !(_textComponent.getText() == null || _textComponent.getText().isEmpty());
             boolean marked = _textComponent.getSelectedText() != null;
 
-            boolean pasteAvailable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null).isDataFlavorSupported(DataFlavor.stringFlavor);
+            boolean pasteAvailable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null)
+                    .isDataFlavorSupported(DataFlavor.stringFlavor);
 
-            _undoAction.setEnabled(enabled && editable && (_lastActionSelected == _Actions.CUT || _lastActionSelected == _Actions.PASTE));
+            _undoAction.setEnabled(enabled && editable
+                    && (_lastActionSelected == _Actions.CUT || _lastActionSelected == _Actions.PASTE));
             _cutAction.setEnabled(enabled && editable && marked);
             _copyAction.setEnabled(enabled && marked);
             _pasteAction.setEnabled(enabled && editable && pasteAvailable);

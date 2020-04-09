@@ -65,8 +65,8 @@ public class StreamChunk {
         }
 
         /**
-         * Get an input stream based on the contents of this output stream. Do
-         * not use the output stream after calling this method.
+         * Get an input stream based on the contents of this output stream. Do not use
+         * the output stream after calling this method.
          *
          * @return an {@link InputStream}
          */

@@ -24,47 +24,47 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jPanel2" max="32767" attributes="0"/>
-                  <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
-                  <Group type="102" attributes="0">
-                      <Component id="warning_label" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
-                  <Component id="total_file_size_label" alignment="0" max="32767" attributes="0"/>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="skip_rest_button" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="skip_button" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="dance_button" min="-2" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
+        <Group type="102" attributes="0">
+          <EmptySpace max="-2" attributes="0"/>
+          <Group type="103" groupAlignment="0" attributes="0">
+            <Component id="jPanel2" max="32767" attributes="0"/>
+            <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
+            <Group type="102" attributes="0">
+              <Component id="warning_label" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+            </Group>
+            <Component id="total_file_size_label" alignment="0" max="32767" attributes="0"/>
+            <Group type="102" alignment="1" attributes="0">
+              <Component id="skip_rest_button" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="skip_button" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="dance_button" min="-2" max="-2" attributes="0"/>
+            </Group>
           </Group>
+          <EmptySpace max="-2" attributes="0"/>
+        </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanel1" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="total_file_size_label" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="warning_label" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="dance_button" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="skip_rest_button" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="skip_button" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
+        <Group type="102" alignment="1" attributes="0">
+          <EmptySpace max="-2" attributes="0"/>
+          <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
+          <EmptySpace max="-2" attributes="0"/>
+          <Component id="jPanel1" max="32767" attributes="0"/>
+          <EmptySpace max="-2" attributes="0"/>
+          <Component id="total_file_size_label" min="-2" max="-2" attributes="0"/>
+          <EmptySpace max="-2" attributes="0"/>
+          <Component id="warning_label" min="-2" max="-2" attributes="0"/>
+          <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+          <Group type="103" groupAlignment="3" attributes="0">
+            <Component id="dance_button" alignment="3" min="-2" max="-2" attributes="0"/>
+            <Component id="skip_rest_button" alignment="3" min="-2" max="-2" attributes="0"/>
+            <Component id="skip_button" alignment="3" min="-2" max="-2" attributes="0"/>
           </Group>
+          <EmptySpace max="-2" attributes="0"/>
+        </Group>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -81,12 +81,12 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="file_tree_scrollpane" alignment="0" max="32767" attributes="0"/>
+            <Component id="file_tree_scrollpane" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="file_tree_scrollpane" alignment="0" pref="310" max="32767" attributes="0"/>
+            <Component id="file_tree_scrollpane" alignment="0" pref="310" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -127,63 +127,63 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
+            <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                <Group type="102" attributes="0">
+                  <Component id="upload_log_checkbox" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="priority_checkbox" min="-2" max="-2" attributes="0"/>
+                </Group>
+                <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Component id="upload_log_checkbox" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="priority_checkbox" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="dir_name_label" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="account_label" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="add_files_button" max="32767" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="add_folder_button" max="32767" attributes="0"/>
-                              </Group>
-                              <Component id="dir_name_textfield" max="32767" attributes="0"/>
-                              <Component id="account_combobox" max="32767" attributes="0"/>
-                              <Component id="used_space_label" alignment="0" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
+                    <Component id="dir_name_label" alignment="0" min="-2" max="-2" attributes="0"/>
+                    <Component id="account_label" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                    <Group type="102" alignment="0" attributes="0">
+                      <Component id="add_files_button" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="add_folder_button" max="32767" attributes="0"/>
+                    </Group>
+                    <Component id="dir_name_textfield" max="32767" attributes="0"/>
+                    <Component id="account_combobox" max="32767" attributes="0"/>
+                    <Component id="used_space_label" alignment="0" max="32767" attributes="0"/>
+                  </Group>
+                </Group>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
+            </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="dir_name_label" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="dir_name_textfield" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="account_label" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="account_combobox" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="used_space_label" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="add_files_button" min="-2" max="-2" attributes="0"/>
-                      <Component id="add_folder_button" alignment="0" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="upload_log_checkbox" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="priority_checkbox" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+            <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                <Component id="dir_name_label" alignment="3" min="-2" max="-2" attributes="0"/>
+                <Component id="dir_name_textfield" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                <Component id="account_label" alignment="3" min="-2" max="-2" attributes="0"/>
+                <Component id="account_combobox" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="used_space_label" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                <Component id="add_files_button" min="-2" max="-2" attributes="0"/>
+                <Component id="add_folder_button" alignment="0" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                <Component id="upload_log_checkbox" alignment="3" min="-2" max="-2" attributes="0"/>
+                <Component id="priority_checkbox" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="32767" attributes="0"/>
+            </Group>
           </Group>
         </DimensionLayout>
       </Layout>

@@ -77,7 +77,8 @@ public class UploadMACGenerator implements Runnable, SecureSingleThreadNotifiabl
 
         Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
 
-        LOG.log(Level.INFO, "{0} MAC GENERATOR {1} Hello!", new Object[]{Thread.currentThread().getName(), getUpload().getFile_name()});
+        LOG.log(Level.INFO, "{0} MAC GENERATOR {1} Hello!",
+                new Object[] { Thread.currentThread().getName(), getUpload().getFile_name() });
 
         try {
 
@@ -87,9 +88,10 @@ public class UploadMACGenerator implements Runnable, SecureSingleThreadNotifiabl
 
             int cbc_per = 0;
 
-            int[] file_mac = new int[]{0, 0, 0, 0};
+            int[] file_mac = new int[] { 0, 0, 0, 0 };
 
-            HashMap upload_progress = DBTools.selectUploadProgress(_upload.getFile_name(), _upload.getMa().getFull_email());
+            HashMap upload_progress = DBTools.selectUploadProgress(_upload.getFile_name(),
+                    _upload.getMa().getFull_email());
 
             if (upload_progress != null) {
 
@@ -129,7 +131,8 @@ public class UploadMACGenerator implements Runnable, SecureSingleThreadNotifiabl
 
                         long chunk_offset = ChunkWriterManager.calculateChunkOffset(chunk_id, 1);
 
-                        long chunk_size = ChunkWriterManager.calculateChunkSize(chunk_id, _upload.getFile_size(), chunk_offset, 1);
+                        long chunk_size = ChunkWriterManager.calculateChunkSize(chunk_id, _upload.getFile_size(),
+                                chunk_offset, 1);
 
                         ChunkWriterManager.checkChunkID(chunk_id, _upload.getFile_size(), chunk_offset);
 
@@ -191,15 +194,18 @@ public class UploadMACGenerator implements Runnable, SecureSingleThreadNotifiabl
                     mac = true;
                 }
 
-                _upload.setTemp_mac_data(String.valueOf(tot) + "#" + String.valueOf(chunk_id) + "#" + Bin2BASE64(i32a2bin(file_mac)));
+                _upload.setTemp_mac_data(
+                        String.valueOf(tot) + "#" + String.valueOf(chunk_id) + "#" + Bin2BASE64(i32a2bin(file_mac)));
 
                 if (mac) {
 
-                    int[] meta_mac = {file_mac[0] ^ file_mac[1], file_mac[2] ^ file_mac[3]};
+                    int[] meta_mac = { file_mac[0] ^ file_mac[1], file_mac[2] ^ file_mac[3] };
 
                     _upload.setFile_meta_mac(meta_mac);
 
-                    LOG.log(Level.INFO, "{0} MAC GENERATOR {1} finished MAC CALCULATION. Waiting workers to finish uploading (if any)...", new Object[]{Thread.currentThread().getName(), getUpload().getFile_name()});
+                    LOG.log(Level.INFO,
+                            "{0} MAC GENERATOR {1} finished MAC CALCULATION. Waiting workers to finish uploading (if any)...",
+                            new Object[] { Thread.currentThread().getName(), getUpload().getFile_name() });
 
                 }
             }
@@ -215,7 +221,8 @@ public class UploadMACGenerator implements Runnable, SecureSingleThreadNotifiabl
 
             _upload.secureNotify();
 
-            LOG.log(Level.INFO, "{0} MAC GENERATOR {1} BYE BYE...", new Object[]{Thread.currentThread().getName(), getUpload().getFile_name()});
+            LOG.log(Level.INFO, "{0} MAC GENERATOR {1} BYE BYE...",
+                    new Object[] { Thread.currentThread().getName(), getUpload().getFile_name() });
 
         } catch (Exception ex) {
             LOG.log(Level.SEVERE, ex.getMessage());

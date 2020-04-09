@@ -37,7 +37,8 @@ public class StreamChunkDownloader implements Runnable {
     @Override
     public void run() {
 
-        LOG.log(Level.INFO, "{0} Worker [{1}]: let''s do some work!", new Object[]{Thread.currentThread().getName(), _id});
+        LOG.log(Level.INFO, "{0} Worker [{1}]: let''s do some work!",
+                new Object[] { Thread.currentThread().getName(), _id });
 
         HttpURLConnection con = null;
 
@@ -68,9 +69,11 @@ public class StreamChunkDownloader implements Runnable {
 
             while (!_exit && !_chunkmanager.isExit()) {
 
-                while (!_exit && !_chunkmanager.isExit() && _chunkmanager.getChunk_queue().size() >= StreamChunkManager.BUFFER_CHUNKS_SIZE) {
+                while (!_exit && !_chunkmanager.isExit()
+                        && _chunkmanager.getChunk_queue().size() >= StreamChunkManager.BUFFER_CHUNKS_SIZE) {
 
-                    LOG.log(Level.INFO, "{0} Worker [{1}]: Chunk buffer is full. I pause myself.", new Object[]{Thread.currentThread().getName(), _id});
+                    LOG.log(Level.INFO, "{0} Worker [{1}]: Chunk buffer is full. I pause myself.",
+                            new Object[] { Thread.currentThread().getName(), _id });
 
                     _chunkmanager.secureWait();
                 }
@@ -88,7 +91,8 @@ public class StreamChunkDownloader implements Runnable {
 
                     StreamChunk chunk_stream = new StreamChunk(offset, _chunkmanager.calculateChunkSize(offset), url);
 
-                    if ((current_smart_proxy != null || http_error == 509) && MainPanel.isUse_smart_proxy() && !MainPanel.isUse_proxy()) {
+                    if ((current_smart_proxy != null || http_error == 509) && MainPanel.isUse_smart_proxy()
+                            && !MainPanel.isUse_proxy()) {
 
                         if (current_smart_proxy != null && http_error != 0) {
 
@@ -104,7 +108,9 @@ public class StreamChunkDownloader implements Runnable {
 
                             smart_proxy_socks = smart_proxy[1].equals("socks");
 
-                            Logger.getLogger(MiscTools.class.getName()).log(Level.WARNING, "{0}: worker {1} excluding proxy -> {2}", new Object[]{Thread.currentThread().getName(), _id, current_smart_proxy});
+                            Logger.getLogger(MiscTools.class.getName()).log(Level.WARNING,
+                                    "{0}: worker {1} excluding proxy -> {2}",
+                                    new Object[] { Thread.currentThread().getName(), _id, current_smart_proxy });
 
                         } else if (current_smart_proxy == null) {
 
@@ -120,7 +126,8 @@ public class StreamChunkDownloader implements Runnable {
 
                             String[] proxy_info = current_smart_proxy.split(":");
 
-                            Proxy proxy = new Proxy(smart_proxy_socks ? Proxy.Type.SOCKS : Proxy.Type.HTTP, new InetSocketAddress(proxy_info[0], Integer.parseInt(proxy_info[1])));
+                            Proxy proxy = new Proxy(smart_proxy_socks ? Proxy.Type.SOCKS : Proxy.Type.HTTP,
+                                    new InetSocketAddress(proxy_info[0], Integer.parseInt(proxy_info[1])));
 
                             URL chunk_url = new URL(chunk_stream.getUrl());
 
@@ -139,11 +146,16 @@ public class StreamChunkDownloader implements Runnable {
 
                         if (MainPanel.isUse_proxy()) {
 
-                            con = (HttpURLConnection) chunk_url.openConnection(new Proxy(smart_proxy_socks ? Proxy.Type.SOCKS : Proxy.Type.HTTP, new InetSocketAddress(MainPanel.getProxy_host(), MainPanel.getProxy_port())));
+                            con = (HttpURLConnection) chunk_url.openConnection(new Proxy(
+                                    smart_proxy_socks ? Proxy.Type.SOCKS : Proxy.Type.HTTP,
+                                    new InetSocketAddress(MainPanel.getProxy_host(), MainPanel.getProxy_port())));
 
                             if (MainPanel.getProxy_user() != null && !"".equals(MainPanel.getProxy_user())) {
 
-                                con.setRequestProperty("Proxy-Authorization", "Basic " + MiscTools.Bin2BASE64((MainPanel.getProxy_user() + ":" + MainPanel.getProxy_pass()).getBytes("UTF-8")));
+                                con.setRequestProperty("Proxy-Authorization",
+                                        "Basic " + MiscTools.Bin2BASE64(
+                                                (MainPanel.getProxy_user() + ":" + MainPanel.getProxy_pass())
+                                                        .getBytes("UTF-8")));
                             }
                         } else {
 
@@ -151,7 +163,8 @@ public class StreamChunkDownloader implements Runnable {
 
                                 String[] proxy_info = current_smart_proxy.split(":");
 
-                                Proxy proxy = new Proxy(smart_proxy_socks ? Proxy.Type.SOCKS : Proxy.Type.HTTP, new InetSocketAddress(proxy_info[0], Integer.parseInt(proxy_info[1])));
+                                Proxy proxy = new Proxy(smart_proxy_socks ? Proxy.Type.SOCKS : Proxy.Type.HTTP,
+                                        new InetSocketAddress(proxy_info[0], Integer.parseInt(proxy_info[1])));
 
                                 con = (HttpURLConnection) chunk_url.openConnection(proxy);
 
@@ -174,7 +187,8 @@ public class StreamChunkDownloader implements Runnable {
 
                     byte[] buffer = new byte[DEFAULT_BYTE_BUFFER_SIZE];
 
-                    LOG.log(Level.INFO, "{0} Worker [{1}]: offset: {2} size: {3}", new Object[]{Thread.currentThread().getName(), _id, offset, chunk_stream.getSize()});
+                    LOG.log(Level.INFO, "{0} Worker [{1}]: offset: {2} size: {3}",
+                            new Object[] { Thread.currentThread().getName(), _id, offset, chunk_stream.getSize() });
 
                     http_error = 0;
 
@@ -186,7 +200,8 @@ public class StreamChunkDownloader implements Runnable {
 
                             if (http_status != 200) {
 
-                                LOG.log(Level.INFO, "{0} Failed : HTTP error code : {1}", new Object[]{Thread.currentThread().getName(), http_status});
+                                LOG.log(Level.INFO, "{0} Failed : HTTP error code : {1}",
+                                        new Object[] { Thread.currentThread().getName(), http_status });
 
                                 http_error = http_status;
 
@@ -196,7 +211,10 @@ public class StreamChunkDownloader implements Runnable {
 
                                     int chunk_writes = 0;
 
-                                    while (!_exit && !_chunkmanager.isExit() && chunk_writes < chunk_stream.getSize() && (reads = is.read(buffer, 0, Math.min((int) (chunk_stream.getSize() - chunk_writes), buffer.length))) != -1) {
+                                    while (!_exit && !_chunkmanager.isExit() && chunk_writes < chunk_stream.getSize()
+                                            && (reads = is.read(buffer, 0,
+                                                    Math.min((int) (chunk_stream.getSize() - chunk_writes),
+                                                            buffer.length))) != -1) {
 
                                         chunk_stream.getOutputStream().write(buffer, 0, reads);
 
@@ -205,7 +223,9 @@ public class StreamChunkDownloader implements Runnable {
 
                                     if (chunk_stream.getSize() == chunk_writes) {
 
-                                        LOG.log(Level.INFO, "{0} Worker [{1}] has downloaded chunk [{2}]!", new Object[]{Thread.currentThread().getName(), _id, chunk_stream.getOffset()});
+                                        LOG.log(Level.INFO, "{0} Worker [{1}] has downloaded chunk [{2}]!",
+                                                new Object[] { Thread.currentThread().getName(), _id,
+                                                        chunk_stream.getOffset() });
 
                                         _chunkmanager.getChunk_queue().put(chunk_stream.getOffset(), chunk_stream);
 
@@ -239,7 +259,7 @@ public class StreamChunkDownloader implements Runnable {
 
         _chunkmanager.secureNotifyAll();
 
-        LOG.log(Level.INFO, "{0} Worker [{1}]: bye bye", new Object[]{Thread.currentThread().getName(), _id});
+        LOG.log(Level.INFO, "{0} Worker [{1}]: bye bye", new Object[] { Thread.currentThread().getName(), _id });
     }
 
 }

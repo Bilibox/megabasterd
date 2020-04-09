@@ -23,6 +23,7 @@ public class SqliteSingleton {
 
         return LazyHolder.INSTANCE;
     }
+
     private final ConcurrentHashMap<Thread, Connection> _connections_map;
 
     private SqliteSingleton() {
@@ -40,11 +41,13 @@ public class SqliteSingleton {
 
         try {
 
-            if (!_connections_map.containsKey(Thread.currentThread()) || !(conn = _connections_map.get(Thread.currentThread())).isValid(VALIDATION_TIMEOUT)) {
+            if (!_connections_map.containsKey(Thread.currentThread())
+                    || !(conn = _connections_map.get(Thread.currentThread())).isValid(VALIDATION_TIMEOUT)) {
 
                 Class.forName("org.sqlite.JDBC");
 
-                conn = DriverManager.getConnection("jdbc:sqlite:" + System.getProperty("user.home") + "/.megabasterd" + "/" + SQLITE_FILE + "?journal_mode=WAL&synchronous=OFF&journal_size_limit=500");
+                conn = DriverManager.getConnection("jdbc:sqlite:" + System.getProperty("user.home") + "/.megabasterd"
+                        + "/" + SQLITE_FILE + "?journal_mode=WAL&synchronous=OFF&journal_size_limit=500");
 
                 _connections_map.put(Thread.currentThread(), conn);
             }

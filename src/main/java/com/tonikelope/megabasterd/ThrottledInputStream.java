@@ -2,15 +2,12 @@ package com.tonikelope.megabasterd;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Logger;
 
 /**
  *
  * @author tonikelope
  */
 public class ThrottledInputStream extends InputStream {
-
-    private static final Logger LOG = Logger.getLogger(ThrottledInputStream.class.getName());
 
     private final InputStream _rawStream;
 
@@ -156,7 +153,8 @@ public class ThrottledInputStream extends InputStream {
 
         _slice_size = null;
 
-        while (_stream_supervisor.getMaxBytesPerSecInput() > 0 && (_stream_supervisor.isQueue_swapping() || (_slice_size = _stream_supervisor.getInput_slice_queue().poll()) == null)) {
+        while (_stream_supervisor.getMaxBytesPerSecInput() > 0 && (_stream_supervisor.isQueue_swapping()
+                || (_slice_size = _stream_supervisor.getInput_slice_queue().poll()) == null)) {
 
             _stream_supervisor.secureWait();
         }

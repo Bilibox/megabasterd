@@ -32,7 +32,8 @@ public class ChunkDownloaderMono extends ChunkDownloader {
     @Override
     public void run() {
 
-        LOG.log(Level.INFO, "{0} Worker [{1}]: let''s do some work! {2}", new Object[]{Thread.currentThread().getName(), getId(), getDownload().getFile_name()});
+        LOG.log(Level.INFO, "{0} Worker [{1}]: let''s do some work! {2}",
+                new Object[] { Thread.currentThread().getName(), getId(), getDownload().getFile_name() });
 
         HttpURLConnection con = null;
 
@@ -59,7 +60,8 @@ public class ChunkDownloaderMono extends ChunkDownloader {
 
                 long chunk_offset = ChunkWriterManager.calculateChunkOffset(chunk_id, 1);
 
-                long chunk_size = ChunkWriterManager.calculateChunkSize(chunk_id, getDownload().getFile_size(), chunk_offset, 1);
+                long chunk_size = ChunkWriterManager.calculateChunkSize(chunk_id, getDownload().getFile_size(),
+                        chunk_offset, 1);
 
                 ChunkWriterManager.checkChunkID(chunk_id, getDownload().getFile_size(), chunk_offset);
 
@@ -79,11 +81,15 @@ public class ChunkDownloaderMono extends ChunkDownloader {
 
                         if (MainPanel.isUse_proxy()) {
 
-                            con = (HttpURLConnection) url.openConnection(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(MainPanel.getProxy_host(), MainPanel.getProxy_port())));
+                            con = (HttpURLConnection) url.openConnection(new Proxy(Proxy.Type.HTTP,
+                                    new InetSocketAddress(MainPanel.getProxy_host(), MainPanel.getProxy_port())));
 
                             if (MainPanel.getProxy_user() != null && !"".equals(MainPanel.getProxy_user())) {
 
-                                con.setRequestProperty("Proxy-Authorization", "Basic " + MiscTools.Bin2BASE64((MainPanel.getProxy_user() + ":" + MainPanel.getProxy_pass()).getBytes("UTF-8")));
+                                con.setRequestProperty("Proxy-Authorization",
+                                        "Basic " + MiscTools.Bin2BASE64(
+                                                (MainPanel.getProxy_user() + ":" + MainPanel.getProxy_pass())
+                                                        .getBytes("UTF-8")));
                             }
                         } else {
 
@@ -96,7 +102,11 @@ public class ChunkDownloaderMono extends ChunkDownloader {
 
                         http_status = con.getResponseCode();
 
-                        cis = new CipherInputStream(new ThrottledInputStream(con.getInputStream(), getDownload().getMain_panel().getStream_supervisor()), genDecrypter("AES", "AES/CTR/NoPadding", byte_file_key, forwardMEGALinkKeyIV(byte_iv, bytes_downloaded)));
+                        cis = new CipherInputStream(
+                                new ThrottledInputStream(con.getInputStream(),
+                                        getDownload().getMain_panel().getStream_supervisor()),
+                                genDecrypter("AES", "AES/CTR/NoPadding", byte_file_key,
+                                        forwardMEGALinkKeyIV(byte_iv, bytes_downloaded)));
 
                     }
 
@@ -108,7 +118,8 @@ public class ChunkDownloaderMono extends ChunkDownloader {
 
                     if (http_status != 200) {
 
-                        LOG.log(Level.INFO, "{0} Failed : HTTP error code : {1} {2}", new Object[]{Thread.currentThread().getName(), http_status, getDownload().getFile_name()});
+                        LOG.log(Level.INFO, "{0} Failed : HTTP error code : {1} {2}", new Object[] {
+                                Thread.currentThread().getName(), http_status, getDownload().getFile_name() });
 
                         http_error = http_status;
 
@@ -133,7 +144,8 @@ public class ChunkDownloaderMono extends ChunkDownloader {
 
                             int reads = 0;
 
-                            while (!getDownload().isStopped() && chunk_reads < chunk_size && (reads = cis.read(buffer, 0, Math.min((int) (chunk_size - chunk_reads), buffer.length))) != -1) {
+                            while (!getDownload().isStopped() && chunk_reads < chunk_size && (reads = cis.read(buffer,
+                                    0, Math.min((int) (chunk_size - chunk_reads), buffer.length))) != -1) {
                                 getDownload().getOutput_stream().write(buffer, 0, reads);
 
                                 chunk_reads += reads;
@@ -142,7 +154,8 @@ public class ChunkDownloaderMono extends ChunkDownloader {
 
                                 getDownload().getProgress_meter().secureNotify();
 
-                                if (getDownload().isPaused() && !getDownload().isStopped() && chunk_reads < chunk_size) {
+                                if (getDownload().isPaused() && !getDownload().isStopped()
+                                        && chunk_reads < chunk_size) {
 
                                     getDownload().pause_worker_mono();
 
@@ -170,7 +183,8 @@ public class ChunkDownloaderMono extends ChunkDownloader {
 
                     if (ex instanceof SocketTimeoutException) {
                         timeout = true;
-                        LOG.log(Level.SEVERE, "{0} TIMEOUT downloading chunk {1}", new Object[]{Thread.currentThread().getName(), chunk_id});
+                        LOG.log(Level.SEVERE, "{0} TIMEOUT downloading chunk {1}",
+                                new Object[] { Thread.currentThread().getName(), chunk_id });
                     } else {
                         LOG.log(Level.SEVERE, ex.getMessage());
                     }
@@ -221,7 +235,8 @@ public class ChunkDownloaderMono extends ChunkDownloader {
 
         getDownload().secureNotify();
 
-        LOG.log(Level.INFO, "{0} ChunkDownloaderMONO {1}: bye bye", new Object[]{Thread.currentThread().getName(), getDownload().getFile_name()});
+        LOG.log(Level.INFO, "{0} ChunkDownloaderMONO {1}: bye bye",
+                new Object[] { Thread.currentThread().getName(), getDownload().getFile_name() });
 
     }
 }

@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  * @author tonikelope
  *
  *
- * Thanks to -> https://stackoverflow.com/users/6477541/sarvesh-agarwal
+ *         Thanks to -> https://stackoverflow.com/users/6477541/sarvesh-agarwal
  */
 public class MegaProxyServer implements Runnable {
 
@@ -49,7 +49,8 @@ public class MegaProxyServer implements Runnable {
     @Override
     public void run() {
 
-        _main_panel.getView().updateMCReverseStatus(LabelTranslatorSingleton.getInstance().translate("MC reverse mode: ON (port ") + _port + ")");
+        _main_panel.getView().updateMCReverseStatus(
+                LabelTranslatorSingleton.getInstance().translate("MC reverse mode: ON (port ") + _port + ")");
 
         try {
 
@@ -84,8 +85,10 @@ public class MegaProxyServer implements Runnable {
 
     public static class Handler extends Thread {
 
-        public static final Pattern CONNECT_PATTERN = Pattern.compile("CONNECT (.*mega(?:\\.co)?\\.nz):(443) HTTP/(1\\.[01])", Pattern.CASE_INSENSITIVE);
-        public static final Pattern AUTH_PATTERN = Pattern.compile("Proxy-Authorization: Basic +(.+)", Pattern.CASE_INSENSITIVE);
+        public static final Pattern CONNECT_PATTERN = Pattern
+                .compile("CONNECT (.*mega(?:\\.co)?\\.nz):(443) HTTP/(1\\.[01])", Pattern.CASE_INSENSITIVE);
+        public static final Pattern AUTH_PATTERN = Pattern.compile("Proxy-Authorization: Basic +(.+)",
+                Pattern.CASE_INSENSITIVE);
 
         private static void forwardData(Socket inputSocket, Socket outputSocket) {
             try {
@@ -137,7 +140,8 @@ public class MegaProxyServer implements Runnable {
 
                 Matcher matcher = CONNECT_PATTERN.matcher(request);
 
-                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(_clientSocket.getOutputStream(), "UTF-8");
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(_clientSocket.getOutputStream(),
+                        "UTF-8");
 
                 if (matcher.matches()) {
 
@@ -247,8 +251,7 @@ public class MegaProxyServer implements Runnable {
         private String readLine(Socket socket) throws IOException {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             int next;
-            readerLoop:
-            while ((next = socket.getInputStream().read()) != -1) {
+            readerLoop: while ((next = socket.getInputStream().read()) != -1) {
                 if (_previousWasR && next == '\n') {
                     _previousWasR = false;
                     continue;

@@ -34,7 +34,8 @@ public class StreamChunkManager implements Runnable, SecureMultiThreadNotifiable
     private final KissVideoStreamServer _server;
     private volatile boolean _exit;
 
-    public StreamChunkManager(KissVideoStreamServer server, String link, HashMap file_info, String mega_account, PipedOutputStream pipeos, String url, long start_offset, long end_offset) {
+    public StreamChunkManager(KissVideoStreamServer server, String link, HashMap file_info, String mega_account,
+            PipedOutputStream pipeos, String url, long start_offset, long end_offset) {
         _server = server;
         _link = link;
         _mega_account = mega_account;
@@ -56,7 +57,8 @@ public class StreamChunkManager implements Runnable, SecureMultiThreadNotifiable
 
         if (!checkMegaDownloadUrl(_url)) {
 
-            _url = _server.getMegaFileDownloadUrl(_link, (String) _file_info.get("pass_hash"), (String) _file_info.get("noexpiretoken"), _mega_account);
+            _url = _server.getMegaFileDownloadUrl(_link, (String) _file_info.get("pass_hash"),
+                    (String) _file_info.get("noexpiretoken"), _mega_account);
             _file_info.put("url", _url);
             _server.getLink_cache().put(_link, _file_info);
         }
@@ -81,7 +83,8 @@ public class StreamChunkManager implements Runnable, SecureMultiThreadNotifiable
 
         try {
 
-            LOG.log(Level.INFO, "{0} StreamChunkManager: let''s do some work! Start: {1}   End: {2}", new Object[]{Thread.currentThread().getName(), _start_offset, _end_offset});
+            LOG.log(Level.INFO, "{0} StreamChunkManager: let''s do some work! Start: {1}   End: {2}",
+                    new Object[] { Thread.currentThread().getName(), _start_offset, _end_offset });
 
             while (!_exit && _bytes_written < _end_offset) {
 
@@ -104,13 +107,15 @@ public class StreamChunkManager implements Runnable, SecureMultiThreadNotifiable
 
                     secureNotifyAll();
 
-                    LOG.log(Level.INFO, "{0} StreamChunkManager has written {1} / {2} ...", new Object[]{Thread.currentThread().getName(), _bytes_written, _end_offset});
+                    LOG.log(Level.INFO, "{0} StreamChunkManager has written {1} / {2} ...",
+                            new Object[] { Thread.currentThread().getName(), _bytes_written, _end_offset });
 
                 }
 
                 if (!_exit && _bytes_written < _end_offset) {
 
-                    LOG.log(Level.INFO, "{0} StreamChunkManager waiting for offset {1}...", new Object[]{Thread.currentThread().getName(), _bytes_written});
+                    LOG.log(Level.INFO, "{0} StreamChunkManager waiting for offset {1}...",
+                            new Object[] { Thread.currentThread().getName(), _bytes_written });
 
                     secureWait();
                 }
@@ -140,7 +145,9 @@ public class StreamChunkManager implements Runnable, SecureMultiThreadNotifiable
 
             long next_offset = _next_offset_required;
 
-            _next_offset_required = _next_offset_required + CHUNK_SIZE < _end_offset ? _next_offset_required + CHUNK_SIZE : -1;
+            _next_offset_required = _next_offset_required + CHUNK_SIZE < _end_offset
+                    ? _next_offset_required + CHUNK_SIZE
+                    : -1;
 
             return next_offset;
         }

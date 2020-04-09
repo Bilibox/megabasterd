@@ -4,7 +4,6 @@ import static com.tonikelope.megabasterd.MiscTools.*;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 
@@ -14,7 +13,7 @@ import javax.swing.tree.MutableTreeNode;
  */
 public class MegaMutableTreeNode extends DefaultMutableTreeNode {
 
-    private static final Logger LOG = Logger.getLogger(MegaMutableTreeNode.class.getName());
+    private static final long serialVersionUID = 1L;
     protected Comparator nodeComparator = new Comparator() {
         @Override
         public int compare(Object o1, Object o2) {
@@ -44,7 +43,9 @@ public class MegaMutableTreeNode extends DefaultMutableTreeNode {
 
             HashMap<String, Object> user_object = (HashMap<String, Object>) userObject;
 
-            return user_object.get("name") + ((isLeaf() && user_object.get("size") != null) ? " [" + formatBytes((long) user_object.get("size")) + "]" : "");
+            return user_object.get("name") + ((isLeaf() && user_object.get("size") != null)
+                    ? " [" + formatBytes((long) user_object.get("size")) + "]"
+                    : "");
 
         } else if (userObject instanceof Object) {
 
@@ -58,7 +59,7 @@ public class MegaMutableTreeNode extends DefaultMutableTreeNode {
 
     @Override
     public Object clone() {
-        return super.clone(); //To change body of generated methods, choose Tools | Templates.
+        return super.clone(); // To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

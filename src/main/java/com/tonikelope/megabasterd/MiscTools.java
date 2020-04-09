@@ -87,7 +87,8 @@ public class MiscTools {
     public static final int EXP_BACKOFF_MAX_WAIT_TIME = 8;
     public static final Object PASS_LOCK = new Object();
     public static final int HTTP_TIMEOUT = 10;
-    private static final Comparator<DefaultMutableTreeNode> TREE_NODE_COMPARATOR = (DefaultMutableTreeNode a, DefaultMutableTreeNode b) -> {
+    private static final Comparator<DefaultMutableTreeNode> TREE_NODE_COMPARATOR = (DefaultMutableTreeNode a,
+            DefaultMutableTreeNode b) -> {
         if (a.isLeaf() && !b.isLeaf()) {
             return 1;
         } else if (!a.isLeaf() && b.isLeaf()) {
@@ -99,7 +100,6 @@ public class MiscTools {
             return MiscTools.naturalCompare(sa, sb, true);
         }
     };
-    private static final Logger LOG = Logger.getLogger(MiscTools.class.getName());
 
     public static void deleteDirectoryRecursion(Path path) throws IOException {
         if (Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS)) {
@@ -140,8 +140,10 @@ public class MiscTools {
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MiscTools.class.getName()).log(java.util.logging.Level.SEVERE, ex.getMessage());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MiscTools.class.getName()).log(java.util.logging.Level.SEVERE,
+                    ex.getMessage());
         }
     }
 
@@ -316,19 +318,23 @@ public class MiscTools {
 
             if (component instanceof javax.swing.JLabel) {
 
-                ((JLabel) component).setText(LabelTranslatorSingleton.getInstance().translate(((JLabel) component).getText()));
+                ((JLabel) component)
+                        .setText(LabelTranslatorSingleton.getInstance().translate(((JLabel) component).getText()));
 
             } else if (component instanceof javax.swing.JButton) {
 
-                ((AbstractButton) component).setText(LabelTranslatorSingleton.getInstance().translate(((AbstractButton) component).getText()));
+                ((AbstractButton) component).setText(
+                        LabelTranslatorSingleton.getInstance().translate(((AbstractButton) component).getText()));
 
             } else if (component instanceof javax.swing.JCheckBox) {
 
-                ((AbstractButton) component).setText(LabelTranslatorSingleton.getInstance().translate(((AbstractButton) component).getText()));
+                ((AbstractButton) component).setText(
+                        LabelTranslatorSingleton.getInstance().translate(((AbstractButton) component).getText()));
 
             } else if ((component instanceof JMenuItem) && !(component instanceof JMenu)) {
 
-                ((AbstractButton) component).setText(LabelTranslatorSingleton.getInstance().translate(((AbstractButton) component).getText()));
+                ((AbstractButton) component).setText(
+                        LabelTranslatorSingleton.getInstance().translate(((AbstractButton) component).getText()));
 
             } else if (component instanceof JMenu) {
 
@@ -338,7 +344,8 @@ public class MiscTools {
                     }
                 }
 
-                ((AbstractButton) component).setText(LabelTranslatorSingleton.getInstance().translate(((AbstractButton) component).getText()));
+                ((AbstractButton) component).setText(
+                        LabelTranslatorSingleton.getInstance().translate(((AbstractButton) component).getText()));
 
             } else if (component instanceof Container) {
 
@@ -350,11 +357,13 @@ public class MiscTools {
                 }
 
                 if ((component instanceof JPanel) && (((JComponent) component).getBorder() instanceof TitledBorder)) {
-                    ((TitledBorder) ((JComponent) component).getBorder()).setTitle(LabelTranslatorSingleton.getInstance().translate(((TitledBorder) ((JComponent) component).getBorder()).getTitle()));
+                    ((TitledBorder) ((JComponent) component).getBorder()).setTitle(LabelTranslatorSingleton
+                            .getInstance().translate(((TitledBorder) ((JComponent) component).getBorder()).getTitle()));
                 }
 
                 if (component instanceof JDialog) {
-                    ((Dialog) component).setTitle(LabelTranslatorSingleton.getInstance().translate(((Dialog) component).getTitle()));
+                    ((Dialog) component).setTitle(
+                            LabelTranslatorSingleton.getInstance().translate(((Dialog) component).getTitle()));
                 }
             }
         }
@@ -364,12 +373,14 @@ public class MiscTools {
 
         Font old_title_font = border.getTitleFont();
 
-        Font new_title_font = font.deriveFont(old_title_font.getStyle(), Math.round(old_title_font.getSize() * zoom_factor));
+        Font new_title_font = font.deriveFont(old_title_font.getStyle(),
+                Math.round(old_title_font.getSize() * zoom_factor));
 
         border.setTitleFont(new_title_font);
     }
 
-    public static String HashString(String algo, String data) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public static String HashString(String algo, String data)
+            throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest md = MessageDigest.getInstance(algo);
 
         byte[] thedigest = md.digest(data.getBytes("UTF-8"));
@@ -385,7 +396,8 @@ public class MiscTools {
         return bin2hex(thedigest);
     }
 
-    public static byte[] HashBin(String algo, String data) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public static byte[] HashBin(String algo, String data)
+            throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest md = MessageDigest.getInstance(algo);
 
         return md.digest(data.getBytes("UTF-8"));
@@ -446,7 +458,10 @@ public class MiscTools {
             } else {
 
                 try {
-                    /* OJO!!! El thread que lanza esto NO PUEDE poseer locks que necesite el EDT o se producirá un DEADLOCK */
+                    /*
+                     * OJO!!! El thread que lanza esto NO PUEDE poseer locks que necesite el EDT o
+                     * se producirá un DEADLOCK
+                     */
                     SwingUtilities.invokeAndWait(r);
 
                 } catch (InterruptedException | InvocationTargetException ex) {
@@ -508,7 +523,7 @@ public class MiscTools {
 
     public static String formatBytes(Long bytes) {
 
-        String[] units = {"B", "KB", "MB", "GB", "TB"};
+        String[] units = { "B", "KB", "MB", "GB", "TB" };
 
         bytes = Math.max(bytes, 0L);
 
@@ -648,7 +663,8 @@ public class MiscTools {
 
                 new_root = node_class.newInstance();
 
-                ((MutableTreeNode) new_root).setUserObject(((DefaultMutableTreeNode) tree_model.getRoot()).getUserObject());
+                ((MutableTreeNode) new_root)
+                        .setUserObject(((DefaultMutableTreeNode) tree_model.getRoot()).getUserObject());
 
             } catch (InstantiationException | IllegalAccessException ex) {
                 Logger.getLogger(MiscTools.class.getName()).log(Level.SEVERE, ex.getMessage());
@@ -677,7 +693,8 @@ public class MiscTools {
 
                                         node = node_class.newInstance();
 
-                                        ((MutableTreeNode) node).setUserObject(((DefaultMutableTreeNode) path_element).getUserObject());
+                                        ((MutableTreeNode) node)
+                                                .setUserObject(((DefaultMutableTreeNode) path_element).getUserObject());
 
                                     } catch (InstantiationException | IllegalAccessException ex) {
                                         Logger.getLogger(MiscTools.class.getName()).log(Level.SEVERE, ex.getMessage());
@@ -732,17 +749,22 @@ public class MiscTools {
             max_length--;
         }
 
-        return (text.length() > max_length) ? text.replaceAll("^(.{1," + (max_length / 2) + "}).*?(.{1," + (max_length / 2) + "})$", "$1" + separator + "$2") : text;
+        return (text.length() > max_length) ? text.replaceAll(
+                "^(.{1," + (max_length / 2) + "}).*?(.{1," + (max_length / 2) + "})$", "$1" + separator + "$2") : text;
     }
 
     public static String cleanFilename(String filename) {
 
-        return (System.getProperty("os.name").toLowerCase().contains("win") ? filename.replaceAll("[<>:\"/\\\\\\|\\?\\*\t]+", "").replaceAll("[ \\.]{1,}/{1,}", "/") : filename).replaceAll("[\\.]{1,}$", "").trim();
+        return (System.getProperty("os.name").toLowerCase().contains("win")
+                ? filename.replaceAll("[<>:\"/\\\\\\|\\?\\*\t]+", "").replaceAll("[ \\.]{1,}/{1,}", "/")
+                : filename).replaceAll("[\\.]{1,}$", "").trim();
     }
 
     public static String cleanFilePath(String path) {
 
-        return !path.equals(".") ? ((System.getProperty("os.name").toLowerCase().contains("win") ? path.replaceAll("[<>:\"\\|\\?\\*\t]+", "").replaceAll("[ \\.]{1,}/{1,}", "/") : path).replaceAll("[\\.]{1,}$", "").trim()) : path;
+        return !path.equals(".") ? ((System.getProperty("os.name").toLowerCase().contains("win")
+                ? path.replaceAll("[<>:\"\\|\\?\\*\t]+", "").replaceAll("[ \\.]{1,}/{1,}", "/")
+                : path).replaceAll("[\\.]{1,}$", "").trim()) : path;
     }
 
     public static byte[] genRandomByteArray(int length) {
@@ -789,7 +811,8 @@ public class MiscTools {
 
                 ArrayList<String> links = new ArrayList<>();
 
-                ArrayList<String> base64_chunks = findAllRegex("[A-Za-z0-9+/_-]+=*", URLDecoder.decode(data, "UTF-8"), 0);
+                ArrayList<String> base64_chunks = findAllRegex("[A-Za-z0-9+/_-]+=*", URLDecoder.decode(data, "UTF-8"),
+                        0);
 
                 if (!base64_chunks.isEmpty()) {
 
@@ -797,18 +820,22 @@ public class MiscTools {
 
                         try {
 
-                            String decoded = MiscTools.findFirstRegex("(?:https?|mega)://[^\r\n]+(#[^\r\n!]*?)?![^\r\n!]+![^\\?\r\n]+", new String(Base64.getDecoder().decode(chunk), "UTF-8"), 0);
+                            String decoded = MiscTools.findFirstRegex(
+                                    "(?:https?|mega)://[^\r\n]+(#[^\r\n!]*?)?![^\r\n!]+![^\\?\r\n]+",
+                                    new String(Base64.getDecoder().decode(chunk), "UTF-8"), 0);
 
                             if (decoded != null) {
                                 links.add(decoded);
                             }
 
                         } catch (Exception e) {
-                        };
+                        }
+                        ;
                     }
                 }
 
-                links.addAll(findAllRegex("(?:https?|mega)://[^\r\n]+(#[^\r\n!]*?)?![^\r\n!]+![^\\?\r\n]+", URLDecoder.decode(data, "UTF-8"), 0));
+                links.addAll(findAllRegex("(?:https?|mega)://[^\r\n]+(#[^\r\n!]*?)?![^\r\n!]+![^\\?\r\n]+",
+                        URLDecoder.decode(data, "UTF-8"), 0));
 
                 links.addAll(findAllRegex("mega://e(n|l)c[^\r\n]+", URLDecoder.decode(data, "UTF-8"), 0));
 
@@ -828,7 +855,8 @@ public class MiscTools {
         if (data != null) {
 
             try {
-                ArrayList<String> links = findAllRegex("(?:https?|mega)://[^\r\n]+(#[^\r\n!]*?)?![^\r\n!]+![^\\?\r\n]+", URLDecoder.decode(data, "UTF-8"), 0);
+                ArrayList<String> links = findAllRegex("(?:https?|mega)://[^\r\n]+(#[^\r\n!]*?)?![^\r\n!]+![^\\?\r\n]+",
+                        URLDecoder.decode(data, "UTF-8"), 0);
 
                 links.addAll(findAllRegex("mega://e(n|l)c[^\r\n]+", URLDecoder.decode(data, "UTF-8"), 0));
 
@@ -878,7 +906,8 @@ public class MiscTools {
 
                 URL url = new URL(string_url + "/0-0");
 
-                if ((current_smart_proxy != null || http_error == 509) && MainPanel.isUse_smart_proxy() && !MainPanel.isUse_proxy()) {
+                if ((current_smart_proxy != null || http_error == 509) && MainPanel.isUse_smart_proxy()
+                        && !MainPanel.isUse_proxy()) {
 
                     if (current_smart_proxy != null && http_error != 0) {
 
@@ -907,7 +936,8 @@ public class MiscTools {
 
                         String[] proxy_info = current_smart_proxy.split(":");
 
-                        Proxy proxy = new Proxy(smart_proxy_socks ? Proxy.Type.SOCKS : Proxy.Type.HTTP, new InetSocketAddress(proxy_info[0], Integer.parseInt(proxy_info[1])));
+                        Proxy proxy = new Proxy(smart_proxy_socks ? Proxy.Type.SOCKS : Proxy.Type.HTTP,
+                                new InetSocketAddress(proxy_info[0], Integer.parseInt(proxy_info[1])));
 
                         con = (HttpURLConnection) url.openConnection(proxy);
 
@@ -915,11 +945,16 @@ public class MiscTools {
 
                         if (MainPanel.isUse_proxy()) {
 
-                            con = (HttpURLConnection) url.openConnection(new Proxy(smart_proxy_socks ? Proxy.Type.SOCKS : Proxy.Type.HTTP, new InetSocketAddress(MainPanel.getProxy_host(), MainPanel.getProxy_port())));
+                            con = (HttpURLConnection) url.openConnection(new Proxy(
+                                    smart_proxy_socks ? Proxy.Type.SOCKS : Proxy.Type.HTTP,
+                                    new InetSocketAddress(MainPanel.getProxy_host(), MainPanel.getProxy_port())));
 
                             if (MainPanel.getProxy_user() != null && !"".equals(MainPanel.getProxy_user())) {
 
-                                con.setRequestProperty("Proxy-Authorization", "Basic " + MiscTools.Bin2BASE64((MainPanel.getProxy_user() + ":" + MainPanel.getProxy_pass()).getBytes("UTF-8")));
+                                con.setRequestProperty("Proxy-Authorization",
+                                        "Basic " + MiscTools.Bin2BASE64(
+                                                (MainPanel.getProxy_user() + ":" + MainPanel.getProxy_pass())
+                                                        .getBytes("UTF-8")));
                             }
                         } else {
 
@@ -931,11 +966,14 @@ public class MiscTools {
 
                     if (MainPanel.isUse_proxy()) {
 
-                        con = (HttpURLConnection) url.openConnection(new Proxy(smart_proxy_socks ? Proxy.Type.SOCKS : Proxy.Type.HTTP, new InetSocketAddress(MainPanel.getProxy_host(), MainPanel.getProxy_port())));
+                        con = (HttpURLConnection) url
+                                .openConnection(new Proxy(smart_proxy_socks ? Proxy.Type.SOCKS : Proxy.Type.HTTP,
+                                        new InetSocketAddress(MainPanel.getProxy_host(), MainPanel.getProxy_port())));
 
                         if (MainPanel.getProxy_user() != null && !"".equals(MainPanel.getProxy_user())) {
 
-                            con.setRequestProperty("Proxy-Authorization", "Basic " + MiscTools.Bin2BASE64((MainPanel.getProxy_user() + ":" + MainPanel.getProxy_pass()).getBytes("UTF-8")));
+                            con.setRequestProperty("Proxy-Authorization", "Basic " + MiscTools.Bin2BASE64(
+                                    (MainPanel.getProxy_user() + ":" + MainPanel.getProxy_pass()).getBytes("UTF-8")));
                         }
                     } else {
 
@@ -986,11 +1024,13 @@ public class MiscTools {
 
             if (MainPanel.isUse_proxy()) {
 
-                con = (HttpURLConnection) url_api.openConnection(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(MainPanel.getProxy_host(), MainPanel.getProxy_port())));
+                con = (HttpURLConnection) url_api.openConnection(new Proxy(Proxy.Type.HTTP,
+                        new InetSocketAddress(MainPanel.getProxy_host(), MainPanel.getProxy_port())));
 
                 if (MainPanel.getProxy_user() != null && !"".equals(MainPanel.getProxy_user())) {
 
-                    con.setRequestProperty("Proxy-Authorization", "Basic " + MiscTools.Bin2BASE64((MainPanel.getProxy_user() + ":" + MainPanel.getProxy_pass()).getBytes("UTF-8")));
+                    con.setRequestProperty("Proxy-Authorization", "Basic " + MiscTools.Bin2BASE64(
+                            (MainPanel.getProxy_user() + ":" + MainPanel.getProxy_pass()).getBytes("UTF-8")));
                 }
             } else {
 
@@ -1028,7 +1068,8 @@ public class MiscTools {
 
     public static String checkNewVersion(String url) {
 
-        String new_version_major = null, new_version_minor = null, current_version_major = null, current_version_minor = null;
+        String new_version_major = null, new_version_minor = null, current_version_major = null,
+                current_version_minor = null;
 
         URL mb_url;
 
@@ -1040,11 +1081,13 @@ public class MiscTools {
 
             if (MainPanel.isUse_proxy()) {
 
-                con = (HttpURLConnection) mb_url.openConnection(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(MainPanel.getProxy_host(), MainPanel.getProxy_port())));
+                con = (HttpURLConnection) mb_url.openConnection(new Proxy(Proxy.Type.HTTP,
+                        new InetSocketAddress(MainPanel.getProxy_host(), MainPanel.getProxy_port())));
 
                 if (MainPanel.getProxy_user() != null && !"".equals(MainPanel.getProxy_user())) {
 
-                    con.setRequestProperty("Proxy-Authorization", "Basic " + MiscTools.Bin2BASE64((MainPanel.getProxy_user() + ":" + MainPanel.getProxy_pass()).getBytes("UTF-8")));
+                    con.setRequestProperty("Proxy-Authorization", "Basic " + MiscTools.Bin2BASE64(
+                            (MainPanel.getProxy_user() + ":" + MainPanel.getProxy_pass()).getBytes("UTF-8")));
                 }
             } else {
 
@@ -1076,7 +1119,10 @@ public class MiscTools {
 
                 current_version_minor = findFirstRegex("[0-9]+\\.([0-9]+)$", VERSION, 1);
 
-                if (new_version_major != null && (Integer.parseInt(current_version_major) < Integer.parseInt(new_version_major) || (Integer.parseInt(current_version_major) == Integer.parseInt(new_version_major) && Integer.parseInt(current_version_minor) < Integer.parseInt(new_version_minor)))) {
+                if (new_version_major != null && (Integer.parseInt(current_version_major) < Integer
+                        .parseInt(new_version_major)
+                        || (Integer.parseInt(current_version_major) == Integer.parseInt(new_version_major)
+                                && Integer.parseInt(current_version_minor) < Integer.parseInt(new_version_minor)))) {
 
                     return new_version_major + "." + new_version_minor;
 
@@ -1129,7 +1175,8 @@ public class MiscTools {
 
             StringBuilder cmd = new StringBuilder();
 
-            cmd.append(System.getProperty("java.home")).append(File.separator).append("bin").append(File.separator).append("java ");
+            cmd.append(System.getProperty("java.home")).append(File.separator).append("bin").append(File.separator)
+                    .append("java ");
 
             ManagementFactory.getRuntimeMXBean().getInputArguments().forEach((jvmArg) -> {
                 cmd.append(jvmArg).append(" ");
@@ -1150,7 +1197,7 @@ public class MiscTools {
     }
 
     /*
-        Thanks -> https://stackoverflow.com/a/26884326
+     * Thanks -> https://stackoverflow.com/a/26884326
      */
     public static int naturalCompare(String a, String b, boolean ignoreCase) {
 
@@ -1207,10 +1254,10 @@ public class MiscTools {
         if (asNumeric) {
             if (aLength > bLength && a.charAt(bLength) >= '0' && a.charAt(bLength) <= '9') // as number
             {
-                return 1;  // a has bigger size, thus b is smaller
+                return 1; // a has bigger size, thus b is smaller
             } else if (bLength > aLength && b.charAt(aLength) >= '0' && b.charAt(aLength) <= '9') // as number
             {
-                return -1;  // b has bigger size, thus a is smaller
+                return -1; // b has bigger size, thus a is smaller
             } else if (lastNumericCompare == 0) {
                 return aLength - bLength;
             } else {
@@ -1221,7 +1268,8 @@ public class MiscTools {
         }
     }
 
-    public static MegaAPI checkMegaAccountLoginAndShowMasterPassDialog(MainPanel main_panel, Container container, String email) throws Exception {
+    public static MegaAPI checkMegaAccountLoginAndShowMasterPassDialog(MainPanel main_panel, Container container,
+            String email) throws Exception {
 
         boolean remember_master_pass = true;
 
@@ -1240,7 +1288,8 @@ public class MiscTools {
 
                     if (main_panel.getMaster_pass() == null) {
 
-                        GetMasterPasswordDialog pdialog = new GetMasterPasswordDialog((Frame) container.getParent(), true, main_panel.getMaster_pass_hash(), main_panel.getMaster_pass_salt(), main_panel);
+                        GetMasterPasswordDialog pdialog = new GetMasterPasswordDialog((Frame) container.getParent(),
+                                true, main_panel.getMaster_pass_hash(), main_panel.getMaster_pass_salt(), main_panel);
 
                         pdialog.setLocationRelativeTo(container);
 
@@ -1256,9 +1305,13 @@ public class MiscTools {
 
                             pdialog.dispose();
 
-                            password_aes = Bin2BASE64(CryptTools.aes_cbc_decrypt_pkcs7(BASE642Bin((String) account_info.get("password_aes")), main_panel.getMaster_pass(), CryptTools.AES_ZERO_IV));
+                            password_aes = Bin2BASE64(CryptTools.aes_cbc_decrypt_pkcs7(
+                                    BASE642Bin((String) account_info.get("password_aes")), main_panel.getMaster_pass(),
+                                    CryptTools.AES_ZERO_IV));
 
-                            user_hash = Bin2BASE64(CryptTools.aes_cbc_decrypt_pkcs7(BASE642Bin((String) account_info.get("user_hash")), main_panel.getMaster_pass(), CryptTools.AES_ZERO_IV));
+                            user_hash = Bin2BASE64(
+                                    CryptTools.aes_cbc_decrypt_pkcs7(BASE642Bin((String) account_info.get("user_hash")),
+                                            main_panel.getMaster_pass(), CryptTools.AES_ZERO_IV));
 
                         } else {
 
@@ -1269,9 +1322,13 @@ public class MiscTools {
 
                     } else {
 
-                        password_aes = Bin2BASE64(CryptTools.aes_cbc_decrypt_pkcs7(BASE642Bin((String) account_info.get("password_aes")), main_panel.getMaster_pass(), CryptTools.AES_ZERO_IV));
+                        password_aes = Bin2BASE64(
+                                CryptTools.aes_cbc_decrypt_pkcs7(BASE642Bin((String) account_info.get("password_aes")),
+                                        main_panel.getMaster_pass(), CryptTools.AES_ZERO_IV));
 
-                        user_hash = Bin2BASE64(CryptTools.aes_cbc_decrypt_pkcs7(BASE642Bin((String) account_info.get("user_hash")), main_panel.getMaster_pass(), CryptTools.AES_ZERO_IV));
+                        user_hash = Bin2BASE64(
+                                CryptTools.aes_cbc_decrypt_pkcs7(BASE642Bin((String) account_info.get("user_hash")),
+                                        main_panel.getMaster_pass(), CryptTools.AES_ZERO_IV));
 
                     }
 
@@ -1290,13 +1347,16 @@ public class MiscTools {
 
                     if (old_session_data != null) {
 
-                        Logger.getLogger(MiscTools.class.getName()).log(Level.INFO, "Reutilizando sesión de MEGA guardada para {0}", email);
+                        Logger.getLogger(MiscTools.class.getName()).log(Level.INFO,
+                                "Reutilizando sesión de MEGA guardada para {0}", email);
 
                         MegaAPI old_ma = new MegaAPI();
 
                         if ((boolean) old_session_data.get("crypt")) {
 
-                            ByteArrayInputStream bs = new ByteArrayInputStream(CryptTools.aes_cbc_decrypt_pkcs7((byte[]) old_session_data.get("ma"), main_panel.getMaster_pass(), CryptTools.AES_ZERO_IV));
+                            ByteArrayInputStream bs = new ByteArrayInputStream(
+                                    CryptTools.aes_cbc_decrypt_pkcs7((byte[]) old_session_data.get("ma"),
+                                            main_panel.getMaster_pass(), CryptTools.AES_ZERO_IV));
 
                             try (ObjectInputStream is = new ObjectInputStream(bs)) {
 
@@ -1357,7 +1417,8 @@ public class MiscTools {
 
                         if (main_panel.getMaster_pass() != null) {
 
-                            DBTools.insertMegaSession(email, CryptTools.aes_cbc_encrypt_pkcs7(bs.toByteArray(), main_panel.getMaster_pass(), CryptTools.AES_ZERO_IV), true);
+                            DBTools.insertMegaSession(email, CryptTools.aes_cbc_encrypt_pkcs7(bs.toByteArray(),
+                                    main_panel.getMaster_pass(), CryptTools.AES_ZERO_IV), true);
 
                         } else {
 
@@ -1370,7 +1431,10 @@ public class MiscTools {
                 } catch (MegaAPIException exception) {
 
                     if (exception.getCode() == -6) {
-                        JOptionPane.showMessageDialog(container.getParent(), LabelTranslatorSingleton.getInstance().translate("You've tried to login too many times. Wait an hour."), "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(container.getParent(),
+                                LabelTranslatorSingleton.getInstance()
+                                        .translate("You've tried to login too many times. Wait an hour."),
+                                "Error", JOptionPane.ERROR_MESSAGE);
                     }
 
                     throw exception;

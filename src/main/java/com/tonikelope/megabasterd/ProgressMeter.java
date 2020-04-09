@@ -60,7 +60,8 @@ public class ProgressMeter implements Runnable, SecureSingleThreadNotifiable {
 
     @Override
     public void run() {
-        LOG.log(Level.INFO, "{0} ProgressMeter hello! {1}", new Object[]{Thread.currentThread().getName(), _transference.getFile_name()});
+        LOG.log(Level.INFO, "{0} ProgressMeter hello! {1}",
+                new Object[] { Thread.currentThread().getName(), _transference.getFile_name() });
 
         _progress = _transference.getProgress();
 
@@ -77,7 +78,8 @@ public class ProgressMeter implements Runnable, SecureSingleThreadNotifiable {
             }
         }
 
-        LOG.log(Level.INFO, "{0} ProgressMeter bye bye! {1}", new Object[]{Thread.currentThread().getName(), _transference.getFile_name()});
+        LOG.log(Level.INFO, "{0} ProgressMeter bye bye! {1}",
+                new Object[] { Thread.currentThread().getName(), _transference.getFile_name() });
 
     }
 

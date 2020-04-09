@@ -24,13 +24,15 @@ public class ChunkWriterManager implements Runnable, SecureSingleThreadNotifiabl
     private static final Logger LOG = Logger.getLogger(ChunkWriterManager.class.getName());
 
     public static long calculateChunkOffset(long chunk_id, int size_multi) {
-        long[] offs = {0, 128, 384, 768, 1280, 1920, 2688};
+        long[] offs = { 0, 128, 384, 768, 1280, 1920, 2688 };
 
         return (chunk_id <= 7 ? offs[(int) chunk_id - 1] : (3584 + (chunk_id - 8) * 1024 * size_multi)) * 1024;
     }
 
     public static String genChunkUrl(String file_url, long file_size, long offset, long chunk_size) {
-        return file_url != null ? file_url + "/" + offset + (offset + chunk_size == file_size ? "" : "-" + (offset + chunk_size - 1)) : null;
+        return file_url != null
+                ? file_url + "/" + offset + (offset + chunk_size == file_size ? "" : "-" + (offset + chunk_size - 1))
+                : null;
     }
 
     public static void checkChunkID(long chunk_id, long file_size, long offset) throws ChunkInvalidException {
@@ -58,6 +60,7 @@ public class ChunkWriterManager implements Runnable, SecureSingleThreadNotifiabl
 
         return chunk_size;
     }
+
     private volatile long _last_chunk_id_written;
     private volatile long _bytes_written;
     private final long _file_size;
@@ -134,7 +137,8 @@ public class ChunkWriterManager implements Runnable, SecureSingleThreadNotifiabl
 
     private String _create_chunks_temp_dir() {
 
-        File chunks_temp_dir = new File((_download.getCustom_chunks_dir() != null ? _download.getCustom_chunks_dir() : _download.getDownload_path()) + "/.mb_chunks_" + _download.getFile_key());
+        File chunks_temp_dir = new File((_download.getCustom_chunks_dir() != null ? _download.getCustom_chunks_dir()
+                : _download.getDownload_path()) + "/.mb_chunks_" + _download.getFile_key());
 
         chunks_temp_dir.mkdirs();
 
@@ -155,21 +159,27 @@ public class ChunkWriterManager implements Runnable, SecureSingleThreadNotifiabl
 
         try {
 
-            LOG.log(Level.INFO, "{0} ChunkWriterManager: let's do some work! {1}", new Object[]{Thread.currentThread().getName(), _download.getFile_name()});
+            LOG.log(Level.INFO, "{0} ChunkWriterManager: let's do some work! {1}",
+                    new Object[] { Thread.currentThread().getName(), _download.getFile_name() });
 
-            LOG.log(Level.INFO, "{0} ChunkWriterManager LAST CHUNK WRITTEN -> [{1}] {2} {3}...", new Object[]{Thread.currentThread().getName(), _last_chunk_id_written, _bytes_written, _download.getFile_name()});
+            LOG.log(Level.INFO, "{0} ChunkWriterManager LAST CHUNK WRITTEN -> [{1}] {2} {3}...",
+                    new Object[] { Thread.currentThread().getName(), _last_chunk_id_written, _bytes_written,
+                            _download.getFile_name() });
 
             boolean download_finished = false;
 
             if (_file_size > 0) {
-                while (!_exit && (!_download.isStopped() || !_download.getChunkworkers().isEmpty()) && _bytes_written < _file_size) {
+                while (!_exit && (!_download.isStopped() || !_download.getChunkworkers().isEmpty())
+                        && _bytes_written < _file_size) {
 
-                    File chunk_file = new File(getChunks_dir() + "/" + new File(_download.getFile_name()).getName() + ".chunk" + String.valueOf(_last_chunk_id_written + 1));
+                    File chunk_file = new File(getChunks_dir() + "/" + new File(_download.getFile_name()).getName()
+                            + ".chunk" + String.valueOf(_last_chunk_id_written + 1));
 
                     while (chunk_file.exists() && chunk_file.canRead()) {
 
                         if (!download_finished && _download.getProgress() == _file_size) {
-                            _download.getView().printStatusNormal("Download finished. Joining file chunks, please wait...");
+                            _download.getView()
+                                    .printStatusNormal("Download finished. Joining file chunks, please wait...");
                             _download.getView().getPause_button().setVisible(false);
                             _download.getMain_panel().getGlobal_dl_speed().detachTransference(_download);
                             _download.getView().getSpeed_label().setVisible(false);
@@ -183,28 +193,39 @@ public class ChunkWriterManager implements Runnable, SecureSingleThreadNotifiabl
 
                         int reads;
 
-                        try (CipherInputStream cis = new CipherInputStream(new BufferedInputStream(new FileInputStream(chunk_file)), genDecrypter("AES", "AES/CTR/NoPadding", _byte_file_key, forwardMEGALinkKeyIV(_byte_iv, _bytes_written)))) {
+                        try (CipherInputStream cis = new CipherInputStream(
+                                new BufferedInputStream(new FileInputStream(chunk_file)),
+                                genDecrypter("AES", "AES/CTR/NoPadding", _byte_file_key,
+                                        forwardMEGALinkKeyIV(_byte_iv, _bytes_written)))) {
                             while ((reads = cis.read(buffer)) != -1) {
                                 _download.getOutput_stream().write(buffer, 0, reads);
                             }
-                        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException ex) {
+                        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
+                                | InvalidAlgorithmParameterException ex) {
                             LOG.log(Level.SEVERE, ex.getMessage());
                         }
 
                         _bytes_written += chunk_file.length();
 
-                        LOG.log(Level.INFO, "{0} ChunkWriterManager has written to disk chunk [{1}] {2} {3} {4}...", new Object[]{Thread.currentThread().getName(), _last_chunk_id_written + 1, _bytes_written, _download.calculateLastWrittenChunk(_bytes_written), _download.getFile_name()});
+                        LOG.log(Level.INFO, "{0} ChunkWriterManager has written to disk chunk [{1}] {2} {3} {4}...",
+                                new Object[] { Thread.currentThread().getName(), _last_chunk_id_written + 1,
+                                        _bytes_written, _download.calculateLastWrittenChunk(_bytes_written),
+                                        _download.getFile_name() });
 
                         _last_chunk_id_written++;
 
                         chunk_file.delete();
 
-                        chunk_file = new File(getChunks_dir() + "/" + new File(_download.getFile_name()).getName() + ".chunk" + String.valueOf(_last_chunk_id_written + 1));
+                        chunk_file = new File(getChunks_dir() + "/" + new File(_download.getFile_name()).getName()
+                                + ".chunk" + String.valueOf(_last_chunk_id_written + 1));
                     }
 
-                    if (!_exit && (!_download.isStopped() || !_download.getChunkworkers().isEmpty()) && _bytes_written < _file_size) {
+                    if (!_exit && (!_download.isStopped() || !_download.getChunkworkers().isEmpty())
+                            && _bytes_written < _file_size) {
 
-                        LOG.log(Level.INFO, "{0} ChunkWriterManager waiting for chunk [{1}] {2}...", new Object[]{Thread.currentThread().getName(), _last_chunk_id_written + 1, _download.getFile_name()});
+                        LOG.log(Level.INFO, "{0} ChunkWriterManager waiting for chunk [{1}] {2}...",
+                                new Object[] { Thread.currentThread().getName(), _last_chunk_id_written + 1,
+                                        _download.getFile_name() });
 
                         secureWait();
 
@@ -226,7 +247,8 @@ public class ChunkWriterManager implements Runnable, SecureSingleThreadNotifiabl
 
         _download.secureNotify();
 
-        LOG.log(Level.INFO, "{0} ChunkWriterManager: bye bye {1}", new Object[]{Thread.currentThread().getName(), _download.getFile_name()});
+        LOG.log(Level.INFO, "{0} ChunkWriterManager: bye bye {1}",
+                new Object[] { Thread.currentThread().getName(), _download.getFile_name() });
     }
 
 }
