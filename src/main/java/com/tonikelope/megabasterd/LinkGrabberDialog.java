@@ -326,7 +326,7 @@ public class LinkGrabberDialog extends javax.swing.JDialog implements ClipboardC
 
                         String link = i.next();
 
-                        if (findFirstRegex("(?:https?|mega)://[^/]*/(#.*?)?!.+![^\r\n]+", link, 0) == null) {
+                        if (findFirstRegex("https?://mega.nz/(file|folder)/.*#.*", link, 0) == null) {
 
                             i.remove();
                         }
