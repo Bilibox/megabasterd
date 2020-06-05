@@ -78,7 +78,7 @@ import javax.xml.bind.DatatypeConverter;
 
 /**
  *
- * @author tonikelope @Bilibox
+ * @author tonikelope
  */
 public class MiscTools {
 
@@ -100,6 +100,7 @@ public class MiscTools {
             return MiscTools.naturalCompare(sa, sb, true);
         }
     };
+    private static final Logger LOG = Logger.getLogger(MiscTools.class.getName());
 
     public static void deleteDirectoryRecursion(Path path) throws IOException {
         if (Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS)) {
@@ -755,16 +756,17 @@ public class MiscTools {
 
     public static String cleanFilename(String filename) {
 
-        return (System.getProperty("os.name").toLowerCase().contains("win") ? filename.replaceAll("[<>:\"/\\\\\\|\\?\\*\t]+", "") : filename).replaceAll("\\" + File.separator, "").replaceAll("[\\.]{1,}$", "").trim();
-                ? filename.replaceAll("[<>:\"/\\\\\\|\\?\\*\t]+", "").replaceAll("[ \\.]{1,}/{1,}", "/")
-                : filename).replaceAll("[\\.]{1,}$", "").trim();
+        return (System.getProperty("os.name").toLowerCase().contains("win")
+                ? filename.replaceAll("[<>:\"/\\\\\\|\\?\\*\t]+", "")
+                : filename).replaceAll("\\" + File.separator, "").replaceAll("[\\.]{1,}$", "").trim();
     }
 
     public static String cleanFilePath(String path) {
 
-        return !path.equals(".") ? ((System.getProperty("os.name").toLowerCase().contains("win") ? path.replaceAll("[<>:\"\\|\\?\\*\t]+", "") : path).replaceAll(" +\\" + File.separator, "\\" + File.separator).replaceAll("[\\.]{1,}$", "").trim()) : path;
-                ? path.replaceAll("[<>:\"\\|\\?\\*\t]+", "").replaceAll("[ \\.]{1,}/{1,}", "/")
-                : path).replaceAll("[\\.]{1,}$", "").trim()) : path;
+        return !path.equals(".") ? ((System.getProperty("os.name").toLowerCase().contains("win")
+                ? path.replaceAll("[<>:\"\\|\\?\\*\t]+", "")
+                : path).replaceAll(" +\\" + File.separator, "\\" + File.separator).replaceAll("[\\.]{1,}$", "").trim())
+                : path;
     }
 
     public static byte[] genRandomByteArray(int length) {
@@ -820,9 +822,11 @@ public class MiscTools {
 
                         try {
 
-                            String clean_data = MiscTools.newMegaLinks2Legacy(new String(Base64.getDecoder().decode(chunk)));
+                            String clean_data = MiscTools
+                                    .newMegaLinks2Legacy(new String(Base64.getDecoder().decode(chunk)));
 
-                            String decoded = MiscTools.findFirstRegex("(?:https?|mega)://[^\r\n]+(#[^\r\n!]*?)?![^\r\n!]+![^\\?\r\n]+", clean_data, 0);
+                            String decoded = MiscTools.findFirstRegex(
+                                    "(?:https?|mega)://[^\r\n]+(#[^\r\n!]*?)?![^\r\n!]+![^\\?\r\n]+", clean_data, 0);
 
                             if (decoded != null) {
                                 links.add(decoded);
@@ -835,9 +839,9 @@ public class MiscTools {
                 }
 
                 String clean_data = MiscTools.newMegaLinks2Legacy(URLDecoder.decode(data, "UTF-8"));
-                        URLDecoder.decode(data, "UTF-8"), 0));
 
-                links.addAll(findAllRegex("(?:https?|mega)://[^\r\n]+(#[^\r\n!]*?)?![^\r\n!]+![^\\?\r\n]+", clean_data, 0));
+                links.addAll(
+                        findAllRegex("(?:https?|mega)://[^\r\n]+(#[^\r\n!]*?)?![^\r\n!]+![^\\?\r\n]+", clean_data, 0));
 
                 links.addAll(findAllRegex("mega://e(n|l)c[^\r\n]+", clean_data, 0));
 
@@ -858,9 +862,9 @@ public class MiscTools {
 
             try {
                 String clean_data = MiscTools.newMegaLinks2Legacy(URLDecoder.decode(data, "UTF-8"));
-                        URLDecoder.decode(data, "UTF-8"), 0);
 
-                ArrayList<String> links = findAllRegex("(?:https?|mega)://[^\r\n]+(#[^\r\n!]*?)?![^\r\n!]+![^\\?\r\n]+", clean_data, 0);
+                ArrayList<String> links = findAllRegex("(?:https?|mega)://[^\r\n]+(#[^\r\n!]*?)?![^\r\n!]+![^\\?\r\n]+",
+                        clean_data, 0);
 
                 links.addAll(findAllRegex("mega://e(n|l)c[^\r\n]+", clean_data, 0));
 
