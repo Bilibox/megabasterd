@@ -322,7 +322,8 @@ public class LinkGrabberDialog extends javax.swing.JDialog implements ClipboardC
 
                         String link = i.next();
 
-                        if (findFirstRegex("https?://mega.nz/(file|folder)/.*#.*", link, 0) == null) {
+                        link = MiscTools.newMegaLinks2Legacy(link);
+
 
                             i.remove();
                         }
