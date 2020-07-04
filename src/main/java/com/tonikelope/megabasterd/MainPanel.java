@@ -60,7 +60,7 @@ import javax.swing.UIManager;
  */
 public final class MainPanel {
 
-    public static final String VERSION = "7.26";
+    public static final String VERSION = "7.28";
     public static final boolean FORCE_SMART_PROXY = false; //TRUE FOR DEBUGING SMART PROXY
     public static final int THROTTLE_SLICE_SIZE = 16 * 1024;
     public static final int DEFAULT_BYTE_BUFFER_SIZE = 16 * 1024;
@@ -69,7 +69,7 @@ public final class MainPanel {
     public static final int DEFAULT_MEGA_PROXY_PORT = 9999;
     public static final int RUN_COMMAND_TIME = 600;
     public static final String DEFAULT_LANGUAGE = "EN";
-    public static final boolean DEFAULT_SMART_PROXY = true;
+    public static final boolean DEFAULT_SMART_PROXY = false;
     public static final double FORCE_GARBAGE_COLLECTION_MAX_MEMORY_PERCENT = 0.7;
     public static Font GUI_FONT = createAndRegisterFont("/fonts/Kalam-Light.ttf");
     public static final float ZOOM_FACTOR = 1.0f;
@@ -104,7 +104,7 @@ public final class MainPanel {
         PrintStream fileOut;
 
         try {
-            fileOut = new PrintStream(new FileOutputStream("./megabasterd_DEBUG.log"));
+            fileOut = new PrintStream(new FileOutputStream(System.getProperty("user.home") + "/megabasterd_DEBUG.log"));
 
             System.setOut(fileOut);
             System.setErr(fileOut);
@@ -113,11 +113,7 @@ public final class MainPanel {
             Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        System.out.println(System.getProperty("os.name"));
-
-        System.out.println(System.getProperty("java.vm.name"));
-
-        System.out.println(System.getProperty("java.version"));
+        System.out.println(System.getProperty("os.name") + "" + System.getProperty("java.vm.name") + " " + System.getProperty("java.version") + " " + System.getProperty("java.home"));
 
         _app_image = false;
 
