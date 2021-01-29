@@ -23,14 +23,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.management.ManagementFactory;
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.ByteBuffer;
@@ -52,7 +50,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -413,78 +410,81 @@ public class MiscTools {
         return Base64.getUrlEncoder().withoutPadding().encodeToString(data);
     }
 
+    public static void pausar(long pause) {
+        try {
+            Thread.sleep(pause);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MiscTools.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public static void GUIRun(Runnable r) {
+
+        boolean ok;
+
+        do {
+            ok = true;
+
+            try {
+                if (!SwingUtilities.isEventDispatchThread()) {
+                    SwingUtilities.invokeLater(r);
+                } else {
+                    r.run();
+                }
+            } catch (Exception ex) {
+                ok = false;
+                Logger.getLogger(MiscTools.class.getName()).log(Level.SEVERE, null, ex);
+                MiscTools.pausar(250);
+            }
+
+        } while (!ok);
+    }
+
+    public static void GUIRunAndWait(Runnable r) {
+
+        boolean ok;
+
+        do {
+            ok = true;
+            try {
+                if (!SwingUtilities.isEventDispatchThread()) {
+                    SwingUtilities.invokeAndWait(r);
+                } else {
+                    r.run();
+                }
+            } catch (Exception ex) {
+                ok = false;
+                Logger.getLogger(MiscTools.class.getName()).log(Level.SEVERE, null, ex);
+                MiscTools.pausar(250);
+            }
+        } while (!ok);
+    }
+
+    public static void threadRun(Runnable r) {
+
+        Thread hilo = new Thread(r);
+
+        hilo.start();
+
+    }
+
+    public static FutureTask futureRun(Callable c) {
+
+        FutureTask f = new FutureTask(c);
+
+        Thread hilo = new Thread(f);
+
+        hilo.start();
+
+        return f;
+    }
+
     public static long getWaitTimeExpBackOff(int retryCount) {
 
         long waitTime = ((long) Math.pow(EXP_BACKOFF_BASE, retryCount) * EXP_BACKOFF_SECS_RETRY);
 
         return Math.min(waitTime, EXP_BACKOFF_MAX_WAIT_TIME);
-    }
-
-    public static void swingInvoke(Runnable r) {
-
-        _swingInvokeIt(r, false);
-    }
-
-    public static void swingInvokeAndWait(Runnable r) {
-
-        _swingInvokeIt(r, true);
-    }
-
-    public static Object swingInvokeAndWaitForReturn(Callable c) {
-
-        return _swingInvokeItAndWaitForReturn(c);
-    }
-
-    private static void _swingInvokeIt(Runnable r, boolean wait) {
-
-        if (wait) {
-
-            if (SwingUtilities.isEventDispatchThread()) {
-
-                r.run();
-
-            } else {
-
-                try {
-                    /* OJO!!! El thread que lanza esto NO PUEDE poseer locks que necesite el EDT o se producirá un DEADLOCK */
-                    SwingUtilities.invokeAndWait(r);
-
-                } catch (InterruptedException | InvocationTargetException ex) {
-                    Logger.getLogger(MiscTools.class.getName()).log(Level.SEVERE, ex.getMessage());
-                }
-            }
-
-        } else {
-
-            SwingUtilities.invokeLater(r);
-        }
-    }
-
-    private static Object _swingInvokeItAndWaitForReturn(Callable c) {
-        Object ret = null;
-
-        if (SwingUtilities.isEventDispatchThread()) {
-
-            try {
-                ret = c.call();
-            } catch (Exception ex) {
-                Logger.getLogger(MiscTools.class.getName()).log(Level.SEVERE, ex.getMessage());
-            }
-
-        } else {
-
-            FutureTask<Object> futureTask = new FutureTask<>(c);
-
-            SwingUtilities.invokeLater(futureTask);
-
-            try {
-                ret = futureTask.get();
-            } catch (InterruptedException | ExecutionException ex) {
-                Logger.getLogger(MiscTools.class.getName()).log(Level.SEVERE, ex.getMessage());
-            }
-        }
-
-        return ret;
     }
 
     public static String bin2hex(byte[] b) {
@@ -737,12 +737,12 @@ public class MiscTools {
 
     public static String cleanFilename(String filename) {
 
-        return (System.getProperty("os.name").toLowerCase().contains("win") ? filename.replaceAll("[<>:\"/\\\\\\|\\?\\*\t]+", "") : filename).replaceAll("\\" + File.separator, "").replaceAll("[\\.]{1,}$", "").trim();
+        return (System.getProperty("os.name").toLowerCase().contains("win") ? filename.replaceAll("[<>:\"/\\\\\\|\\?\\*\t]+", "") : filename).replaceAll("\\" + File.separator, "").replaceAll("[\\.]{1,}$", "").replaceAll("[\\x00-\\x1F]", "").trim();
     }
 
     public static String cleanFilePath(String path) {
 
-        return !path.equals(".") ? ((System.getProperty("os.name").toLowerCase().contains("win") ? path.replaceAll("[<>:\"\\|\\?\\*\t]+", "") : path).replaceAll(" +\\" + File.separator, "\\" + File.separator).replaceAll("[\\.]{1,}$", "").trim()) : path;
+        return !path.equals(".") ? ((System.getProperty("os.name").toLowerCase().contains("win") ? path.replaceAll("[<>:\"\\|\\?\\*\t]+", "") : path).replaceAll(" +\\" + File.separator, "\\" + File.separator).replaceAll("[\\.]{1,}$", "").replaceAll("[\\x00-\\x1F]", "").trim()) : path;
     }
 
     public static byte[] genRandomByteArray(int length) {
@@ -785,41 +785,45 @@ public class MiscTools {
 
         if (data != null) {
 
-            try {
-
-                ArrayList<String> links = new ArrayList<>();
-
-                ArrayList<String> base64_chunks = findAllRegex("[A-Za-z0-9+/_-]+=*", URLDecoder.decode(data, "UTF-8"), 0);
-
-                if (!base64_chunks.isEmpty()) {
-
-                    for (String chunk : base64_chunks) {
-
-                        try {
-
-                            String clean_data = MiscTools.newMegaLinks2Legacy(new String(Base64.getDecoder().decode(chunk)));
-
-                            String decoded = MiscTools.findFirstRegex("(?:https?|mega)://[^\r\n]+(#[^\r\n!]*?)?![^\r\n!]+![^\\?\r\n]+", clean_data, 0);
-
-                            if (decoded != null) {
-                                links.add(decoded);
-                            }
-
-                        } catch (Exception e) {
-                        };
-                    }
-                }
-
-                String clean_data = MiscTools.newMegaLinks2Legacy(URLDecoder.decode(data, "UTF-8"));
-
-                links.addAll(findAllRegex("(?:https?|mega)://[^\r\n]+(#[^\r\n!]*?)?![^\r\n!]+![^\\?\r\n]+", clean_data, 0));
-
-                links.addAll(findAllRegex("mega://e(n|l)c[^\r\n]+", clean_data, 0));
-
-                res = links.stream().map((s) -> s + "\n").reduce(res, String::concat);
-            } catch (UnsupportedEncodingException ex) {
-                Logger.getLogger(MiscTools.class.getName()).log(Level.SEVERE, ex.getMessage());
+            if (data.startsWith("moz-extension") || data.startsWith("chrome-extension")) {
+                data = extensionURL2NormalLink(data);
             }
+
+            ArrayList<String> links = new ArrayList<>();
+            String url_decoded;
+            try {
+                url_decoded = URLDecoder.decode(data, "UTF-8");
+            } catch (Exception ex) {
+                url_decoded = data;
+            }
+            ArrayList<String> base64_chunks = findAllRegex("[A-Za-z0-9+/_-]+=*", url_decoded, 0);
+            if (!base64_chunks.isEmpty()) {
+
+                for (String chunk : base64_chunks) {
+
+                    try {
+
+                        String clean_data = MiscTools.newMegaLinks2Legacy(new String(Base64.getDecoder().decode(chunk)));
+
+                        String decoded = MiscTools.findFirstRegex("(?:https?|mega)://[^\r\n]+(#[^\r\n!]*?)?![^\r\n!]+![^\\?\r\n]+", clean_data, 0);
+
+                        if (decoded != null) {
+                            links.add(decoded);
+                        }
+
+                    } catch (Exception e) {
+                    };
+                }
+            }
+            try {
+                url_decoded = URLDecoder.decode(data, "UTF-8");
+            } catch (Exception ex) {
+                url_decoded = data;
+            }
+            String clean_data = MiscTools.newMegaLinks2Legacy(url_decoded);
+            links.addAll(findAllRegex("(?:https?|mega)://[^\r\n]+(#[^\r\n!]*?)?![^\r\n!]+![^\\?\r\n]+", clean_data, 0));
+            links.addAll(findAllRegex("mega://e(n|l)c[^\r\n]+", clean_data, 0));
+            res = links.stream().map((s) -> s + "\n").reduce(res, String::concat);
         }
 
         return res.trim();
@@ -1105,8 +1109,20 @@ public class MiscTools {
     public static void openBrowserURL(final String url) {
 
         try {
-            Desktop.getDesktop().browse(new URI(url));
-        } catch (URISyntaxException | IOException ex) {
+            Logger.getLogger(MiscTools.class.getName()).log(Level.INFO, "Trying to open URL in external browser: {0}", url);
+
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                Desktop.getDesktop().browse(new URI(url));
+                return;
+            }
+            if (System.getProperty("os.name").toLowerCase().contains("nux")) {
+                Process p = Runtime.getRuntime().exec(new String[]{"xdg-open", url});
+                p.waitFor();
+                p.destroy();
+                return;
+            }
+            Logger.getLogger(MiscTools.class.getName()).log(Level.WARNING, "Unable to open URL: Unsupported platform.", url);
+        } catch (Exception ex) {
             Logger.getLogger(MiscTools.class.getName()).log(Level.SEVERE, ex.getMessage());
         }
     }
@@ -1399,6 +1415,15 @@ public class MiscTools {
         String replace1 = data.replaceAll("https://mega\\.nz/folder/([^#]+)#(.+)", "https://mega.nz/#F!$1!$2");
 
         return replace1.replaceAll("https://mega\\.nz/file/([^#]+)#(.+)", "https://mega.nz/#!$1!$2");
+    }
+
+    /* This method changes the MEGA extension URL to a ordinary MEGA URL,
+    so copying the extension URL from Firefox or Chrome also works as a normal URL */
+    public static String extensionURL2NormalLink(String data) {
+
+        String toReplace = data.substring(0, data.indexOf('#') + 1);
+
+        return data.replace(toReplace, "https://mega.nz");
     }
 
     private MiscTools() {

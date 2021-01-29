@@ -1,6 +1,5 @@
 package com.tonikelope.megabasterd;
 
-import static com.tonikelope.megabasterd.MiscTools.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import static java.util.logging.Level.SEVERE;
@@ -29,6 +28,9 @@ public class UploadManager extends TransferenceManager {
 
     @Override
     public void provision(final Transference upload) {
+        MiscTools.GUIRun(() -> {
+            getScroll_panel().add(((Upload) upload).getView());
+        });
 
         ((Upload) upload).provisionIt();
 
@@ -53,7 +55,7 @@ public class UploadManager extends TransferenceManager {
 
         for (final Transference u : uploads) {
 
-            swingInvoke(() -> {
+            MiscTools.GUIRun(() -> {
                 getScroll_panel().remove(((Upload) u).getView());
             });
 
