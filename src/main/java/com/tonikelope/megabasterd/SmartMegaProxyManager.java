@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 public final class SmartMegaProxyManager {
 
     public static String DEFAULT_SMART_PROXY_URL = "https://raw.githubusercontent.com/Bilibox/megabasterd/proxy_list/proxy_list.txt";
-    public static final int PROXY_BLOCK_TIME = 120;
+    public static final int PROXY_BLOCK_TIME = 90;
     public static final int PROXY_AUTO_REFRESH_SLEEP_TIME = 15;
     private static final Logger LOG = Logger.getLogger(SmartMegaProxyManager.class.getName());
     private volatile String _proxy_list_url;
@@ -34,8 +34,7 @@ public final class SmartMegaProxyManager {
     private final MainPanel _main_panel;
 
     public SmartMegaProxyManager(String proxy_list_url, MainPanel main_panel) {
-        _proxy_list_url = (proxy_list_url != null && !"".equals(proxy_list_url)) ? proxy_list_url
-                : DEFAULT_SMART_PROXY_URL;
+        _proxy_list_url = (proxy_list_url != null && !"".equals(proxy_list_url)) ? proxy_list_url : DEFAULT_SMART_PROXY_URL;
         _proxy_list = new LinkedHashMap<>();
         _main_panel = main_panel;
         refreshProxyList();

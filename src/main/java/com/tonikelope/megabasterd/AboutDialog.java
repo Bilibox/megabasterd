@@ -26,17 +26,19 @@ public class AboutDialog extends javax.swing.JDialog {
 
         super(parent, modal);
 
-        initComponents();
+        MiscTools.GUIRunAndWait(() -> {
+            initComponents();
 
-        updateFonts(this, GUI_FONT, parent.getMain_panel().getZoom_factor());
+            updateFonts(this, GUI_FONT, parent.getMain_panel().getZoom_factor());
 
-        translateLabels(this);
+            translateLabels(this);
 
-        if (MainPanel.getNew_version() != null) {
-            mcdown_url_button.setEnabled(true);
-        }
+            if (MainPanel.getNew_version() != null) {
+                mcdown_url_button.setEnabled(true);
+            }
 
-        pack();
+            pack();
+        });
     }
 
     /**
@@ -257,7 +259,7 @@ public class AboutDialog extends javax.swing.JDialog {
         THREAD_POOL.execute(() -> {
             final String new_version = checkNewVersion(MEGABASTERD_URL);
 
-            swingInvoke(() -> {
+            MiscTools.GUIRun(() -> {
                 if (new_version != null) {
 
                     JOptionPane.showMessageDialog(tthis, LabelTranslatorSingleton.getInstance()

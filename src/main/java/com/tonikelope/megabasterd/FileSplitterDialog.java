@@ -18,7 +18,6 @@ package com.tonikelope.megabasterd;
 
 import static com.tonikelope.megabasterd.MainPanel.GUI_FONT;
 import static com.tonikelope.megabasterd.MainPanel.THREAD_POOL;
-import static com.tonikelope.megabasterd.MiscTools.swingInvoke;
 import static com.tonikelope.megabasterd.MiscTools.translateLabels;
 import static com.tonikelope.megabasterd.MiscTools.truncateText;
 import static com.tonikelope.megabasterd.MiscTools.updateFonts;
@@ -46,7 +45,6 @@ import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
  */
 public class FileSplitterDialog extends javax.swing.JDialog {
 
-    private static final long serialVersionUID = 1L;
     private final MainPanel _main_panel;
     private File _file = null;
     private File _output_dir = null;
@@ -59,33 +57,34 @@ public class FileSplitterDialog extends javax.swing.JDialog {
         super(parent, modal);
         _main_panel = parent.getMain_panel();
 
-        initComponents();
+        MiscTools.GUIRunAndWait(() -> {
+            initComponents();
 
-        updateFonts(this, GUI_FONT, _main_panel.getZoom_factor());
+            updateFonts(this, GUI_FONT, _main_panel.getZoom_factor());
 
-        translateLabels(this);
+            translateLabels(this);
 
-        jProgressBar2.setMinimum(0);
-        jProgressBar2.setMaximum(MAX_VALUE);
-        jProgressBar2.setStringPainted(true);
-        jProgressBar2.setValue(0);
-        jProgressBar2.setVisible(false);
+            jProgressBar2.setMinimum(0);
+            jProgressBar2.setMaximum(MAX_VALUE);
+            jProgressBar2.setStringPainted(true);
+            jProgressBar2.setValue(0);
+            jProgressBar2.setVisible(false);
 
-        split_size_text.addKeyListener(new java.awt.event.KeyAdapter() {
+            split_size_text.addKeyListener(new java.awt.event.KeyAdapter() {
 
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                try {
-                    Integer.parseInt(split_size_text.getText());
-                } catch (Exception e) {
-                    split_size_text.setText(split_size_text.getText().substring(0,
-                            Math.max(0, split_size_text.getText().length() - 1)));
+                public void keyReleased(java.awt.event.KeyEvent evt) {
+                    try {
+                        Integer.parseInt(split_size_text.getText());
+                    } catch (Exception e) {
+                        split_size_text.setText(split_size_text.getText().substring(0, Math.max(0, split_size_text.getText().length() - 1)));
+                    }
                 }
-            }
+            });
+
+            split_size_text.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+            pack();
         });
-
-        split_size_text.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
-        pack();
     }
 
     private boolean _splitFile() throws IOException {
@@ -103,37 +102,31 @@ public class FileSplitterDialog extends javax.swing.JDialog {
         int position = 0;
         int conta_split = 1;
 
-        try (RandomAccessFile sourceFile = new RandomAccessFile(this._file.getAbsolutePath(), "r");
-                FileChannel sourceChannel = sourceFile.getChannel()) {
+        try (RandomAccessFile sourceFile = new RandomAccessFile(this._file.getAbsolutePath(), "r"); FileChannel sourceChannel = sourceFile.getChannel()) {
 
             for (; position < numSplits; position++, conta_split++) {
-                _writePartToFile(bytesPerSplit, position * bytesPerSplit, sourceChannel, conta_split,
-                        numSplits + (remainingBytes > 0 ? 1 : 0));
+                _writePartToFile(bytesPerSplit, position * bytesPerSplit, sourceChannel, conta_split, numSplits + (remainingBytes > 0 ? 1 : 0));
             }
 
             if (remainingBytes > 0) {
-                _writePartToFile(remainingBytes, position * bytesPerSplit, sourceChannel, conta_split,
-                        numSplits + (remainingBytes > 0 ? 1 : 0));
+                _writePartToFile(remainingBytes, position * bytesPerSplit, sourceChannel, conta_split, numSplits + (remainingBytes > 0 ? 1 : 0));
             }
         }
 
         return true;
     }
 
-    private void _writePartToFile(long byteSize, long position, FileChannel sourceChannel, int conta_split,
-            long num_splits) throws IOException {
+    private void _writePartToFile(long byteSize, long position, FileChannel sourceChannel, int conta_split, long num_splits) throws IOException {
 
-        Path fileName = Paths.get(this._output_dir.getAbsolutePath() + "/" + this._file.getName() + ".part"
-                + String.valueOf(conta_split) + "-" + String.valueOf(num_splits));
-        try (RandomAccessFile toFile = new RandomAccessFile(fileName.toFile(), "rw");
-                FileChannel toChannel = toFile.getChannel()) {
+        Path fileName = Paths.get(this._output_dir.getAbsolutePath() + "/" + this._file.getName() + ".part" + String.valueOf(conta_split) + "-" + String.valueOf(num_splits));
+        try (RandomAccessFile toFile = new RandomAccessFile(fileName.toFile(), "rw"); FileChannel toChannel = toFile.getChannel()) {
             sourceChannel.position(position);
             toChannel.transferFrom(sourceChannel, 0, byteSize);
         }
 
         _progress += byteSize;
 
-        swingInvoke(() -> {
+        MiscTools.GUIRun(() -> {
             jProgressBar2.setValue((int) Math.floor((MAX_VALUE / (double) _file.length()) * _progress));
         });
 
@@ -145,8 +138,7 @@ public class FileSplitterDialog extends javax.swing.JDialog {
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         file_button = new javax.swing.JButton();
@@ -221,48 +213,53 @@ public class FileSplitterDialog extends javax.swing.JDialog {
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup().addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(file_button, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(file_name_label, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(output_button, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)
-                                .addComponent(file_size_label, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(output_folder_label, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jProgressBar2, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createSequentialGroup().addComponent(split_size_label)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(split_size_text))
-                                .addComponent(split_button, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap()));
-        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup().addContainerGap().addComponent(file_button).addGap(9, 9, 9)
-                        .addComponent(file_name_label)
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(file_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(file_name_label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(output_button, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)
+                    .addComponent(file_size_label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(output_folder_label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jProgressBar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(split_size_label)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(file_size_label).addGap(18, 18, 18).addComponent(output_button)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(output_folder_label).addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(split_size_label)
-                                .addComponent(split_size_text, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jProgressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 36,
-                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(split_button).addContainerGap()));
+                        .addComponent(split_size_text))
+                    .addComponent(split_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(file_button)
+                .addGap(9, 9, 9)
+                .addComponent(file_name_label)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(file_size_label)
+                .addGap(18, 18, 18)
+                .addComponent(output_button)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(output_folder_label)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(split_size_label)
+                    .addComponent(split_size_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jProgressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(split_button)
+                .addContainerGap())
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void file_buttonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_file_buttonActionPerformed
+    private void file_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_file_buttonActionPerformed
+        // TODO add your handling code here:
 
         this.file_button.setText(LabelTranslatorSingleton.getInstance().translate("Opening file..."));
 
@@ -276,8 +273,7 @@ public class FileSplitterDialog extends javax.swing.JDialog {
 
         filechooser.setAcceptAllFileFilterUsed(false);
 
-        if (filechooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION
-                && filechooser.getSelectedFile().canRead()) {
+        if (filechooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION && filechooser.getSelectedFile().canRead()) {
 
             this._file = filechooser.getSelectedFile();
             this.file_name_label.setText(truncateText(this._file.getAbsolutePath(), 100));
@@ -304,9 +300,10 @@ public class FileSplitterDialog extends javax.swing.JDialog {
 
         pack();
 
-    }// GEN-LAST:event_file_buttonActionPerformed
+    }//GEN-LAST:event_file_buttonActionPerformed
 
-    private void output_buttonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_output_buttonActionPerformed
+    private void output_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_output_buttonActionPerformed
+        // TODO add your handling code here:
 
         this.output_button.setText(LabelTranslatorSingleton.getInstance().translate("Changing output folder..."));
 
@@ -326,8 +323,7 @@ public class FileSplitterDialog extends javax.swing.JDialog {
 
         filechooser.setAcceptAllFileFilterUsed(false);
 
-        if (filechooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION
-                && filechooser.getSelectedFile().canRead()) {
+        if (filechooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION && filechooser.getSelectedFile().canRead()) {
 
             this._output_dir = filechooser.getSelectedFile();
 
@@ -345,9 +341,10 @@ public class FileSplitterDialog extends javax.swing.JDialog {
         this.split_button.setEnabled(true);
 
         pack();
-    }// GEN-LAST:event_output_buttonActionPerformed
+    }//GEN-LAST:event_output_buttonActionPerformed
 
-    private void split_buttonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_split_buttonActionPerformed
+    private void split_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_split_buttonActionPerformed
+        // TODO add your handling code here:
 
         if (this._output_dir != null && !"".equals(this.split_size_text.getText())) {
 
@@ -372,9 +369,8 @@ public class FileSplitterDialog extends javax.swing.JDialog {
             THREAD_POOL.execute(() -> {
                 try {
                     if (_splitFile()) {
-                        swingInvoke(() -> {
-                            JOptionPane.showMessageDialog(tthis,
-                                    LabelTranslatorSingleton.getInstance().translate("File successfully splitted!"));
+                        MiscTools.GUIRun(() -> {
+                            JOptionPane.showMessageDialog(tthis, LabelTranslatorSingleton.getInstance().translate("File successfully splitted!"));
 
                             if (Desktop.isDesktopSupported()) {
                                 try {
@@ -391,7 +387,7 @@ public class FileSplitterDialog extends javax.swing.JDialog {
                     } else {
                         _file = null;
                         _output_dir = null;
-                        swingInvoke(() -> {
+                        MiscTools.GUIRun(() -> {
                             file_name_label.setText("");
 
                             output_folder_label.setText("");
@@ -429,7 +425,7 @@ public class FileSplitterDialog extends javax.swing.JDialog {
             });
 
         }
-    }// GEN-LAST:event_split_buttonActionPerformed
+    }//GEN-LAST:event_split_buttonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton file_button;
@@ -442,4 +438,5 @@ public class FileSplitterDialog extends javax.swing.JDialog {
     private javax.swing.JLabel split_size_label;
     private javax.swing.JTextField split_size_text;
     // End of variables declaration//GEN-END:variables
+    private static final Logger LOG = Logger.getLogger(FileSplitterDialog.class.getName());
 }
